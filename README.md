@@ -1,6 +1,10 @@
 # Emergency Contact (SupportNow campaign prototype)
 
+**Live demo: https://morganjlopes.github.io/emergency-contact/**
+
 A SupportNow campaign prototype: help moms get the info that lives in their head (pediatrician, allergies, meds, pickup rules) onto one fridge sheet with a QR code per kid, backed by a living digital page. Gateway strategy: kids first, then partner, then aging parents.
+
+Demo tips: everything saves to your own browser (localStorage), nothing is uploaded. Load the fictional Rivera family from the landing page footer or `sheet.html?demo=1`, print the sheet from Chrome at 100%, and scan any QR with your phone: demo-family codes carry `&demo=1` so they open Maya/Leo/Nora directly on a fresh device.
 
 Heads up: `../emergency-contact/` is a SEPARATE, parallel build of this same campaign (a vinext/React scaffold produced by a ChatGPT/Codex session on 2026-07-30, its own git repo). This folder is the static Claude-built version. They share nothing.
 
