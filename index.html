@@ -85,6 +85,37 @@
 .tick-list i{margin-top:4px; color:var(--give); font-size:13px}
 .qr-side .tick-list i{color:#7fb5f5}
 
+/* Paper vs QR example: sheet + phone side by side */
+.ex-label{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--secondary); margin-bottom:12px; display:flex; gap:8px; align-items:center; justify-content:center}
+.ex-label i{color:var(--brand)}
+.ex-sheet{padding:20px 20px 14px; transform:rotate(-1.2deg); max-width:430px; margin:12px auto 0}
+.ex-arrow{color:var(--brand); font-size:20px}
+.ex-arrow .lbl{font-size:10.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:4px}
+.phone{
+  width:292px; margin:0 auto; background:#fff; border:1.5px solid var(--border); border-radius:36px;
+  box-shadow:var(--shadow-lg); padding:12px 12px 16px;
+}
+.phone .notch{width:104px; height:20px; background:var(--ink); border-radius:11px; margin:0 auto 10px}
+.phone-page{border-radius:24px; background:#f2f4f8; padding:12px 11px 10px}
+.p-sos{background:#fff1f2; border:1px solid #fecdd3; color:#9f1239; border-radius:11px; padding:7px 10px; display:flex; justify-content:space-between; align-items:center; font-size:11px; font-weight:800}
+.p-sos span.pill{background:#e11d48; color:#fff; border-radius:50px; padding:3px 10px; font-size:10.5px}
+.p-head{display:flex; align-items:center; gap:10px; padding:12px 4px 10px}
+.p-head .av{width:38px; height:38px; border-radius:50%; background:var(--navy); color:#fff; font-weight:800; font-size:16px; display:flex; align-items:center; justify-content:center; flex-shrink:0}
+.p-head b{font-size:17px; color:var(--ink); line-height:1.1; display:block}
+.p-head span{font-size:10.5px; color:var(--secondary); font-weight:600}
+.p-card{background:#fff; border:1px solid var(--border); border-radius:13px; padding:11px 12px 7px; margin-bottom:9px}
+.p-card.warn{border-color:#fecdd3; background:#fffafb}
+.p-card h4{font-size:9.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--secondary); margin-bottom:8px; font-weight:800}
+.p-card h4 i{color:var(--brand); margin-right:4px}
+.p-card.warn h4 i{color:#e11d48}
+.p-row{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:5px 0; border-top:1px solid var(--border-light); font-size:12px}
+.p-row:first-of-type{border-top:0}
+.p-row b{color:var(--ink); font-size:12.5px; display:block; line-height:1.2}
+.p-row .rel{font-size:10.5px; color:var(--secondary)}
+.p-call{border:1.2px solid var(--border); color:var(--brand-dark); border-radius:50px; padding:3px 9px; font-weight:800; font-size:10px; white-space:nowrap}
+.p-txt{font-size:11.5px; color:var(--body); padding-bottom:6px}
+.p-more{text-align:center; font-size:10.5px; color:var(--muted); font-weight:700; padding:2px 0 4px}
+
 /* Roadmap */
 .phase-tag{font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; border-radius:6px; padding:3px 9px; display:inline-block; margin-bottom:12px}
 .phase-now{background:var(--give-tint); color:var(--give-dark)}
@@ -303,6 +334,84 @@
           </ul>
         </div>
       </div>
+    </div>
+    <div class="row g-4 align-items-center justify-content-center mt-3">
+      <div class="col-lg-5">
+        <div class="ex-label"><i class="fa-regular fa-file-lines"></i> On the fridge</div>
+        <div class="paper ex-sheet">
+          <div class="magnet"></div>
+          <div class="paper-head">
+            <div class="paper-title"><i class="fa-solid fa-heart-pulse"></i> Emergency Contact</div>
+            <div class="paper-fam">The Rivera Family</div>
+          </div>
+          <div class="call-band">
+            <span><b>Emergency:</b> 911</span>
+            <span><b>Poison Control:</b> 1-800-222-1222</span>
+          </div>
+          <div class="mini-row">
+            <div class="mini-kid">
+              <b>Maya</b><small>age 9</small>
+              <div class="chips"><span class="chip chip-allergy"><i class="fa-solid fa-triangle-exclamation"></i>Peanuts + tree nuts</span><span class="chip chip-med">EpiPen</span></div>
+              <div class="mini-doc">Dr. Chen, Decatur Pediatrics (404) 555-0190</div>
+            </div>
+            <div class="mini-qr" data-qr="0"></div>
+          </div>
+          <div class="mini-row">
+            <div class="mini-kid">
+              <b>Leo</b><small>age 6</small>
+              <div class="chips"><span class="chip chip-ok">No known allergies</span><span class="chip chip-med">Inhaler</span></div>
+              <div class="mini-doc">Dr. Chen, Decatur Pediatrics (404) 555-0190</div>
+            </div>
+            <div class="mini-qr" data-qr="1"></div>
+          </div>
+          <div class="mini-row">
+            <div class="mini-kid">
+              <b>Nora</b><small>age 3</small>
+              <div class="chips"><span class="chip chip-allergy"><i class="fa-solid fa-triangle-exclamation"></i>Amoxicillin</span></div>
+              <div class="mini-doc">Dr. Chen, Decatur Pediatrics (404) 555-0190</div>
+            </div>
+            <div class="mini-qr" data-qr="2"></div>
+          </div>
+          <div class="mini-foot">One Letter page &bull; Updated <span data-today></span></div>
+        </div>
+      </div>
+      <div class="col-lg-1 text-center d-none d-lg-block ex-arrow">
+        <i class="fa-solid fa-qrcode d-block mb-1"></i>
+        <i class="fa-solid fa-arrow-right-long"></i>
+        <div class="lbl">scan</div>
+      </div>
+      <div class="col-lg-4">
+        <div class="ex-label"><i class="fa-solid fa-mobile-screen"></i> After the scan</div>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="phone-page">
+            <div class="p-sos"><span><i class="fa-solid fa-circle-exclamation me-1"></i>Real emergency? 911 first.</span><span class="pill">Call 911</span></div>
+            <div class="p-head">
+              <div class="av">M</div>
+              <div><b>Maya</b><span>Age 9 &bull; Blood type A+ &bull; The Rivera Family</span></div>
+            </div>
+            <div class="p-card">
+              <h4><i class="fa-solid fa-phone"></i>Call first</h4>
+              <div class="p-row"><div><b>Jess Rivera</b><span class="rel">Parent</span></div><span class="p-call"><i class="fa-solid fa-phone me-1"></i>(404) 555-0132</span></div>
+              <div class="p-row"><div><b>Diane Whitfield</b><span class="rel">Grandma, 5 min away</span></div><span class="p-call"><i class="fa-solid fa-phone me-1"></i>(404) 555-0148</span></div>
+            </div>
+            <div class="p-card warn">
+              <h4><i class="fa-solid fa-triangle-exclamation"></i>Allergies</h4>
+              <div class="chips mb-1"><span class="chip chip-allergy">Peanuts</span><span class="chip chip-allergy">Tree nuts</span></div>
+              <div class="p-txt">Hives and swelling. EpiPen in the red pouch, top kitchen shelf. Use it, then call 911.</div>
+            </div>
+            <div class="p-card">
+              <h4><i class="fa-solid fa-pills"></i>Meds</h4>
+              <div class="p-txt">EpiPen (with her at school), Zyrtec 5ml at bedtime</div>
+            </div>
+            <div class="p-more"><i class="fa-solid fa-angles-down me-1"></i>Care team, insurance, pickup list, quirks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4 d-flex gap-2 justify-content-center flex-wrap">
+      <a class="btn btn-ghost btn-sm-x" href="sheet.html?demo=1"><i class="fa-solid fa-print me-1"></i> Open the demo sheet</a>
+      <a class="btn btn-ghost btn-sm-x" href="child.html?i=0&demo=1"><i class="fa-solid fa-qrcode me-1"></i> Open Maya's QR page</a>
     </div>
     <p class="text-center mt-4 mb-0" style="font-size:14px; color:var(--muted)"><i class="fa-solid fa-rotate me-1"></i> Update online any time. The printed codes keep pointing at the current version, so the paper almost never goes stale.</p>
   </div>
