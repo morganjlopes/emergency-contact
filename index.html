@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Contact by SupportNow | Get it out of your head and onto the fridge</title>
+<meta name="description" content="The pediatrician's number, the allergy list, the pickup rules. Emergency Contact turns what only you know into one sheet on the fridge, with a QR code that carries the rest. Start with your free Kids Safety Score.">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link href="assets/ec.css" rel="stylesheet">
+
+<style>
+.hero{
+  position:relative; overflow:hidden;
+  background:
+    radial-gradient(1200px 520px at 12% -10%, var(--warm-1) 0%, transparent 55%),
+    radial-gradient(1100px 520px at 95% 0%, var(--warm-3) 0%, transparent 55%),
+    radial-gradient(900px 600px at 70% 110%, var(--warm-2) 0%, transparent 60%);
+  padding:80px 0 84px;
+}
+.hero h1{font-size:clamp(2.35rem,4.8vw,3.45rem)}
+.hero .lede{font-size:clamp(1.05rem,1.6vw,1.26rem); color:var(--body); max-width:600px}
+.cta-micro{font-size:13.5px; color:var(--muted); font-weight:600}
+
+/* Hero fridge mock */
+.fridge-wrap{position:relative; max-width:440px; margin-left:auto}
+.fridge-paper{padding:22px 22px 16px; transform:rotate(1.6deg)}
+.mini-row{display:flex; align-items:center; gap:12px; padding:10px 0; border-top:1px dashed var(--border)}
+.mini-row:first-of-type{border-top:0}
+.mini-kid{flex:1; min-width:0}
+.mini-kid b{font-size:14.5px; color:var(--ink)}
+.mini-kid small{color:var(--muted); font-weight:600; font-size:12px; margin-left:6px}
+.mini-kid .chips{display:flex; flex-wrap:wrap; gap:5px; margin-top:4px}
+.mini-qr{width:52px; height:52px; flex-shrink:0; padding:3px; border:1px solid var(--border); border-radius:8px; background:#fff}
+.mini-doc{font-size:11.5px; color:var(--secondary); margin-top:3px}
+.mini-foot{font-size:10.5px; color:var(--muted); text-align:center; border-top:1px solid var(--border-light); padding-top:8px; margin-top:6px; font-weight:600; letter-spacing:.02em}
+.float-score{
+  position:absolute; left:-26px; bottom:34px; transform:rotate(-2deg);
+  background:#fff; border:1px solid var(--border); border-radius:16px; padding:12px 18px;
+  box-shadow:var(--shadow-md); display:flex; align-items:center; gap:12px;
+}
+.float-score .n{font-size:30px; font-weight:800; color:var(--give); letter-spacing:-.02em; line-height:1}
+.float-score .t{font-size:12px; font-weight:700; color:var(--ink); line-height:1.3}
+.float-score .t small{display:block; font-weight:600; color:var(--muted); font-size:11px}
+
+/* Steps */
+.step-num{
+  width:40px; height:40px; border-radius:50%; background:var(--navy); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; margin-bottom:16px;
+}
+.step-card h3{font-size:1.12rem}
+.band-legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+
+/* Paper vs QR */
+.layer-card{border-radius:20px; padding:30px 28px; height:100%; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow)}
+.layer-card.qr-side{background:var(--navy); border-color:var(--navy); color:#c8d4f5}
+.layer-card.qr-side h3, .layer-card.qr-side .lead-sm{color:#fff}
+.layer-card h3{display:flex; align-items:center; gap:10px; font-size:1.15rem; margin-bottom:6px}
+.lead-sm{font-size:14px; color:var(--secondary); margin-bottom:18px}
+.tick-list{list-style:none; padding:0; margin:0}
+.tick-list li{display:flex; gap:10px; align-items:flex-start; padding:7px 0; font-size:14.5px}
+.tick-list i{margin-top:4px; color:var(--give); font-size:13px}
+.qr-side .tick-list i{color:#7fb5f5}
+
+/* Roadmap */
+.phase-tag{font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; border-radius:6px; padding:3px 9px; display:inline-block; margin-bottom:12px}
+.phase-now{background:var(--give-tint); color:var(--give-dark)}
+.phase-next{background:var(--brand-bg); color:var(--brand-dark)}
+.phase-soon{background:var(--border-light); color:var(--secondary)}
+
+/* CTA band */
+.cta-band{
+  background:linear-gradient(135deg, var(--navy) 0%, #14225e 60%, #101a49 100%);
+  border-radius:26px; padding:60px 28px; text-align:center; color:#c8d4f5;
+}
+.cta-band h2{color:#fff; font-size:clamp(1.7rem,3vw,2.4rem)}
+
+.accordion-item{border:1px solid var(--border); border-radius:14px !important; overflow:hidden; margin-bottom:10px; background:#fff}
+.accordion-button{font-weight:700; color:var(--ink); font-size:15.5px; background:#fff; box-shadow:none !important}
+.accordion-button:not(.collapsed){color:var(--brand); background:var(--brand-bg)}
+.accordion-body{font-size:14.5px; color:var(--secondary)}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<div class="nav-wrap">
+  <nav class="navbar navbar-expand-lg py-2 container container-narrow">
+    <a class="brand-lockup" href="index.html">
+      <img src="assets/logo.svg" alt="SupportNow" class="brand-logo">
+      <span class="vertical-tag">Emergency<br>Contact</span>
+    </a>
+    <div class="ms-auto d-flex align-items-center gap-1">
+      <a class="nav-link-x d-none d-md-inline" href="#moments">The moments</a>
+      <a class="nav-link-x d-none d-md-inline" href="#how">How it works</a>
+      <a class="nav-link-x d-none d-md-inline" href="#sheet">What's on it</a>
+      <a class="nav-link-x d-none d-lg-inline" href="#faq">FAQ</a>
+      <a class="btn btn-brand btn-sm-x ms-2" href="quiz.html">Get Your Kids Safety Score</a>
+    </div>
+  </nav>
+</div>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container container-narrow">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <h1 class="text-balance mb-3">Emergencies don’t know to ask Mom.</h1>
+        <p class="lede mb-4">The pediatrician's number. The allergy list. Who is allowed to pick up from school. Right now it all lives in one place: you. Emergency Contact gets it onto a single sheet on the fridge, with a QR code that carries the rest, so anyone who steps in can step up.</p>
+        <div class="d-flex flex-wrap align-items-center gap-3 mb-2">
+          <a class="btn btn-brand btn-lg-x" href="quiz.html"><i class="fa-solid fa-clipboard-check me-2"></i>Get Your Kids Safety Score</a>
+          <a class="btn btn-ghost" href="#sheet">See what's on the sheet</a>
+        </div>
+        <div class="cta-micro"><i class="fa-regular fa-clock me-1"></i> 2 minutes, 10 questions, no email required to see your number.</div>
+      </div>
+      <div class="col-lg-6">
+        <div class="fridge-wrap">
+          <div class="paper fridge-paper">
+            <div class="magnet"></div>
+            <div class="paper-head">
+              <div class="paper-title"><i class="fa-solid fa-heart-pulse"></i> Emergency Contact</div>
+              <div class="paper-fam">The Rivera Family</div>
+            </div>
+            <div class="call-band">
+              <span><b>Emergency:</b> 911</span>
+              <span><b>Poison Control:</b> 1-800-222-1222</span>
+              <span><b>Jess:</b> (404) 555-0132</span>
+            </div>
+            <div class="mini-row">
+              <div class="mini-kid">
+                <b>Maya</b><small>age 9</small>
+                <div class="chips"><span class="chip chip-allergy"><i class="fa-solid fa-triangle-exclamation"></i>Peanuts + tree nuts</span><span class="chip chip-med">EpiPen</span></div>
+                <div class="mini-doc">Dr. Chen, Decatur Pediatrics (404) 555-0190</div>
+              </div>
+              <div class="mini-qr" data-qr="0"></div>
+            </div>
+            <div class="mini-row">
+              <div class="mini-kid">
+                <b>Leo</b><small>age 6</small>
+                <div class="chips"><span class="chip chip-ok">No known allergies</span><span class="chip chip-med">Inhaler</span></div>
+                <div class="mini-doc">Dr. Chen, Decatur Pediatrics (404) 555-0190</div>
+              </div>
+              <div class="mini-qr" data-qr="1"></div>
+            </div>
+            <div class="mini-row">
+              <div class="mini-kid">
+                <b>Nora</b><small>age 3</small>
+                <div class="chips"><span class="chip chip-allergy"><i class="fa-solid fa-triangle-exclamation"></i>Amoxicillin</span></div>
+                <div class="mini-doc">Dr. Chen, Decatur Pediatrics (404) 555-0190</div>
+              </div>
+              <div class="mini-qr" data-qr="2"></div>
+            </div>
+            <div class="mini-foot">Scan any code for the full, current picture &bull; Updated <span data-today></span></div>
+          </div>
+          <div class="float-score">
+            <div class="n">91</div>
+            <div class="t">Kids Safety Score<small>Fridge-ready</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Moments -->
+<section class="section" id="moments">
+  <div class="container container-narrow">
+    <div class="section-head">
+      <span class="eyebrow mb-2"><i class="fa-solid fa-calendar-days"></i> The moments</span>
+      <h2 class="text-balance">Life is not derailed by the things we planned for.</h2>
+      <p>The real risk is the stuff we never saw coming. And yet the same handful of ordinary moments keep asking for the same information, and it keeps getting written on whatever was nearby.</p>
+    </div>
+    <div class="row g-3 g-md-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="card-x"><div class="icon-tile"><i class="fa-solid fa-school"></i></div>
+        <h3>Back to school</h3><p>New teachers, new forms, new pickup rules. Every August asks you to write it all down again.</p></div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card-x"><div class="icon-tile rose"><i class="fa-solid fa-baby-carriage"></i></div>
+        <h3>A new babysitter</h3><p>You type the same novel into Messages every time. Allergies, bedtime, the address for the delivery apps.</p></div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card-x"><div class="icon-tile amber"><i class="fa-solid fa-champagne-glasses"></i></div>
+        <h3>Your weekend away</h3><p>The trip you earned. And the 11pm "where is the thermometer" text you did not.</p></div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card-x"><div class="icon-tile give"><i class="fa-solid fa-mug-hot"></i></div>
+        <h3>Grandparents on duty</h3><p>They raised you just fine. They still do not know the inhaler lives in the junk drawer.</p></div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card-x"><div class="icon-tile rose"><i class="fa-solid fa-truck-medical"></i></div>
+        <h3>The ER, at 2am</h3><p>Insurance ID, med doses, allergy history. The intake clipboard does not wait for you to check your email.</p></div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card-x"><div class="icon-tile"><i class="fa-solid fa-cloud-bolt"></i></div>
+        <h3>The one you can't predict</h3><p>Emergencies do not check your calendar first. The plan you make on a calm Tuesday is the one that shows up.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section" id="how" style="background:#fff; border-top:1px solid var(--border-light); border-bottom:1px solid var(--border-light)">
+  <div class="container container-narrow">
+    <div class="section-head">
+      <span class="eyebrow give mb-2"><i class="fa-solid fa-route"></i> How it works</span>
+      <h2 class="text-balance">From your head to the fridge in three steps</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Get your Kids Safety Score</h3>
+          <p class="mb-2" style="font-size:14.5px; color:var(--secondary)">Ten honest questions about what would happen if you were unreachable for six hours. You will know your number, and your gaps, in about two minutes.</p>
+          <div class="band-legend">
+            <span class="band-chip band-rose"><span class="swatch"></span>0-39 Running on memory</span>
+            <span class="band-chip band-amber"><span class="swatch"></span>40-64 Getting there</span>
+            <span class="band-chip band-brand"><span class="swatch"></span>65-84 On the board</span>
+            <span class="band-chip band-give"><span class="swatch"></span>85+ Fridge-ready</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Fill in the blanks</h3>
+          <p style="font-size:14.5px; color:var(--secondary)">A guided Emergency Card for your family: doctors, allergies, meds, backup adults, house rules. Every section you finish boosts your score. Most families who complete it land above 85.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Stick it on the fridge</h3>
+          <p style="font-size:14.5px; color:var(--secondary)">Print one Letter-size sheet, one row per kid, each with its own QR code. Paper holds the basics a sitter needs at a glance. The code carries everything else, and it stays current when you update online.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- What's on the sheet -->
+<section class="section" id="sheet">
+  <div class="container container-narrow">
+    <div class="section-head">
+      <span class="eyebrow mb-2"><i class="fa-solid fa-layer-group"></i> Two layers</span>
+      <h2 class="text-balance">Paper for the glance. QR for the full picture.</h2>
+      <p>A babysitter at the fridge and a nurse at intake need different depths of the same truth. One sheet serves both.</p>
+    </div>
+    <div class="row g-4 align-items-stretch">
+      <div class="col-lg-6">
+        <div class="layer-card">
+          <h3><i class="fa-regular fa-file-lines" style="color:var(--brand)"></i> On the paper</h3>
+          <p class="lead-sm">Readable from four feet away, holding a crying toddler.</p>
+          <ul class="tick-list">
+            <li><i class="fa-solid fa-check"></i> 911 and Poison Control, right at the top</li>
+            <li><i class="fa-solid fa-check"></i> Your home address, spoken aloud to dispatchers</li>
+            <li><i class="fa-solid fa-check"></i> Both parents' numbers, plus the backup adults</li>
+            <li><i class="fa-solid fa-check"></i> Each kid's allergies, flagged so they cannot be missed</li>
+            <li><i class="fa-solid fa-check"></i> The pediatrician's name and number</li>
+            <li><i class="fa-solid fa-check"></i> A QR code per kid, for everything below</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="layer-card qr-side">
+          <h3><i class="fa-solid fa-qrcode"></i> Behind the QR</h3>
+          <p class="lead-sm" style="color:#9db3ec">One scan opens that child's full, current page.</p>
+          <ul class="tick-list">
+            <li><i class="fa-solid fa-check"></i> Allergy reactions, and exactly what to do</li>
+            <li><i class="fa-solid fa-check"></i> Medications with doses and where they live</li>
+            <li><i class="fa-solid fa-check"></i> Insurance carrier and member ID for intake</li>
+            <li><i class="fa-solid fa-check"></i> The full care team: doctor, dentist, preferred hospital</li>
+            <li><i class="fa-solid fa-check"></i> The approved pickup list</li>
+            <li><i class="fa-solid fa-check"></i> The quirks only you know: bedtime, comfort items, the dog</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p class="text-center mt-4 mb-0" style="font-size:14px; color:var(--muted)"><i class="fa-solid fa-rotate me-1"></i> Update online any time. The printed codes keep pointing at the current version, so the paper almost never goes stale.</p>
+  </div>
+</section>
+
+<!-- Roadmap -->
+<section class="section" style="background:#fff; border-top:1px solid var(--border-light)">
+  <div class="container container-narrow">
+    <div class="section-head">
+      <span class="eyebrow amber mb-2"><i class="fa-solid fa-people-roof"></i> Where this goes</span>
+      <h2 class="text-balance">Every family has more than one emergency contact.</h2>
+      <p>Start where the stakes feel highest: the kids. Then give the same one-sheet superpower to the rest of your people.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card-x">
+          <span class="phase-tag phase-now">Today</span>
+          <div class="icon-tile give"><i class="fa-solid fa-children"></i></div>
+          <h3>Your kids</h3>
+          <p>Safety Score, Emergency Card, fridge sheet. The campaign you are looking at right now.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-x">
+          <span class="phase-tag phase-next">Next</span>
+          <div class="icon-tile"><i class="fa-solid fa-user-group"></i></div>
+          <h3>You and your partner</h3>
+          <p>You are somebody's emergency contact too. Your meds, your doctors, your insurance, written down for once.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-x">
+          <span class="phase-tag phase-soon">Soon</span>
+          <div class="icon-tile amber"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <h3>Your parents</h3>
+          <p>The gentle way to finally get Dad's cardiologist and Mom's medication list out of their heads, too.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container" style="max-width:780px">
+    <div class="section-head">
+      <span class="eyebrow mb-2"><i class="fa-regular fa-circle-question"></i> FAQ</span>
+      <h2>Fair questions</h2>
+    </div>
+    <div class="accordion" id="faqAcc">
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">Is it really free?</button></h3>
+        <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#faqAcc"><div class="accordion-body">Yes. Emergency Contact is a free tool from SupportNow, the platform families use to rally meals, money, and logistics when life goes sideways. Helping your family get ahead of the unexpected is the same mission, just earlier.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">Who can see my family's information?</button></h3>
+        <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body">Only someone holding your printed sheet or your links. Pages are private and unlisted, and you can revoke them any time. This prototype keeps everything on your own device, nothing is uploaded anywhere.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">Do I have to reprint when something changes?</button></h3>
+        <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body">Almost never. Update the digital card and every printed QR code keeps pointing at the current version. Reprint only when the paper itself changes, like a new kid, a new number, or a new address.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f4">What should a babysitter do in a real emergency?</button></h3>
+        <div id="f4" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body">Call 911 first, always. The sheet exists for the questions that come next: what is she allergic to, what does he take, who is the doctor, where are the parents. Those answers should not depend on reaching you.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f5">Why a quiz first?</button></h3>
+        <div id="f5" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body">Because "go document everything" never survives a busy week. Your Kids Safety Score shows you the two or three gaps that actually matter, and closing them takes minutes, not an afternoon.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-tight">
+  <div class="container container-narrow">
+    <div class="cta-band">
+      <h2 class="text-balance mb-2">Two minutes to your Kids Safety Score.</h2>
+      <p class="mb-4" style="font-size:1.05rem">And one less thing living rent-free in your head.</p>
+      <a class="btn btn-white btn-lg-x" href="quiz.html"><i class="fa-solid fa-clipboard-check me-2"></i>Get Your Kids Safety Score</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container container-narrow">
+    <div class="row g-4 align-items-center">
+      <div class="col-md-5">
+        <div class="brand-lockup mb-2">
+          <img src="assets/logo.svg" alt="SupportNow" class="brand-logo">
+          <span class="vertical-tag">Emergency<br>Contact</span>
+        </div>
+        <div class="fine">A campaign prototype from SupportNow. Demo data is fictional.</div>
+      </div>
+      <div class="col-md-7 d-flex flex-wrap gap-3 justify-content-md-end align-items-center">
+        <a href="quiz.html">Take the quiz</a>
+        <a href="builder.html">Build your card</a>
+        <a href="sheet.html" onclick="EC.seedDemo()">See a finished sheet (demo family)</a>
+        <a href="index.html" onclick="EC.reset()" class="fine">Reset this device</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/qrcode.min.js"></script>
+<script src="assets/ec.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.querySelectorAll('.mini-qr').forEach(function (el) {
+    EC.qr(el, EC.childUrl(el.dataset.qr));
+  });
+  document.querySelectorAll('[data-today]').forEach(function (el) {
+    el.textContent = EC.fmtDate();
+  });
+</script>
+</body>
+</html>
