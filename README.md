@@ -1,32 +1,91 @@
-# Emergency Contact (SupportNow campaign prototype)
+# Emergency Contact
 
-**Live demo: https://morganjlopes.github.io/emergency-contact/**
+A campaign prototype for **SupportNow**. Static, no build step, no backend.
 
-A SupportNow campaign prototype: help moms get the info that lives in their head (pediatrician, allergies, meds, pickup rules) onto one fridge sheet with a QR code per kid, backed by a living digital page. Gateway strategy: kids first, then partner, then aging parents.
+Live: **https://morganjlopes.github.io/emergency-contact/**
 
-Demo tips: everything saves to your own browser (localStorage), nothing is uploaded. Load the fictional Rivera family from the landing page footer or `sheet.html?demo=1`, print the sheet from Chrome at 100%, and scan any QR with your phone: demo-family codes carry `&demo=1` so they open Maya/Leo/Nora directly on a fresh device.
+> Everything about your kids lives in your head. Put a copy on the fridge.
 
-Heads up: `../emergency-contact/` is a SEPARATE, parallel build of this same campaign (a vinext/React scaffold produced by a ChatGPT/Codex session on 2026-07-30, its own git repo). This folder is the static Claude-built version. They share nothing.
+## The idea
 
-## The flow
+Families prepare for the emergencies they can picture. What actually knocks a week sideways is the
+thing nobody wrote down, on the day the one person who knows it is unreachable. That person is
+usually Mom.
 
-1. `index.html` — landing page. CTA: "Get Your Kids Safety Score".
-2. `quiz.html` — 10 scored questions plus kid count. Produces a 0-100 score with four named bands (Running on memory / Getting there / On the board / Fridge-ready). Quiz alone maxes at 55 points; the other 45 come from documenting.
-3. `builder.html` — the Emergency Card questionnaire (Home base, Your people, Your kids, House rules). Each section boosts the score live. Autosaves to localStorage.
-4. `sheet.html` — the printable fridge sheet: Letter size, one row per kid, QR per kid, 911 + Poison Control band. Print CSS verified via Chrome PDF.
-5. `child.html?i=N` — what a QR scan opens: mobile page with tap-to-call numbers, allergies with reactions, meds, care team, insurance, house notes.
+Certain moments already force this information out of her head and onto paper: back to school, a new
+babysitter, a weekend away, grandparents taking the kids. Every one of those makes her rebuild the
+same list from memory. This campaign gets it built once.
 
-## Run it
+## The funnel
 
-Served by the `proto` launch config (python http.server on 5190, serves all of `_prototypes/`):
+| Page | Role |
+|---|---|
+| `index.html` | Landing page. CTA is **Get Your Kids Safety Score**. |
+| `quiz.html` | The score. Nine questions, two minutes, no account. Results name the specific gaps. |
+| `questionnaire.html` | The questions that close those gaps. Score climbs live as you answer. |
+| `sheet.html` | The deliverable. One printable page, one row per child, a QR code each. |
+| `child.html` | What the QR code opens. Phone-shaped view of one child. |
 
-    python3 -m http.server 5190 --directory /Users/morganjlopes/code/_prototypes
+The gateway is deliberate: kids first because they are the easiest yes, then the same card for a
+partner, for yourself, and for aging parents.
 
-Then open http://localhost:5190/supportnow-emergency-contact/
+## Scoring
+
+Nine items, ten points each, normalized to 100. Defined in `assets/ec.js` as `EC.ITEMS`.
+
+Each item scores `max(what you said in the quiz, what your answers actually document)`, so filling
+in the questionnaire can only ever raise the number, and it raises it honestly, because the thing is
+now genuinely written down and printable.
+
+Three deliberate choices in the model:
+
+- **"No" scores 2, not 0.** You know all of it. The missing points are for it being reachable by
+  someone else, not for ignorance. A parent who has written nothing down lands at 20.
+- **"Does not apply" earns full credit.** Two questions (allergies and medicines, school pickup)
+  offer it. A family whose kids have no allergies is not less prepared, so they are not scored lower.
+- **One item is unreachable by the tool.** `kids_know` ("do your kids know a parent's number by
+  heart") stays a self-report, and the results page turns it into a real-world action. A fully
+  completed questionnaire lands at 96, not 100.
+
+A typical mixed set of answers lands at 51. Bands: 0 to 44 mostly in your head, 45 to 64 some of it
+is written down, 65 to 84 good coverage, 85 and up ready for the unexpected.
+
+## What prints and what does not
+
+The questionnaire marks every answer as **prints** or **scan only**, because a page on the fridge is
+readable by anyone standing in the kitchen. Insurance carrier, member ID and group are scan only for
+that reason. The printed sheet says "Insurance: scan a code" instead.
+
+## Running it
+
+```bash
+python3 -m http.server 5194 --directory /Users/morganjlopes/code/_prototypes/emergency-contact-sn
+```
+
+Registered in `_prototypes/.claude/launch.json` as `emergency-contact-sn` on port **5194**. Opening
+`index.html` from the filesystem also works, though the QR codes then encode a placeholder
+`supportnow.org/e/CODE` address since there is no host to point at.
 
 ## Notes
 
-- Brand tokens and conventions copied from `supportnow-van-fundraising/` (which took them from `supportnow-2.0/styleguide.html`): DM Sans, `#188aec` brand blue, warm neutrals, Bootstrap 5.3 + Font Awesome via CDN.
-- All state is client-side localStorage (`ec_v1`). No backend.
-- Demo family (fictional Riveras) seeds via the builder's "Load the fictional demo family" button, `sheet.html?demo=1`, or the footer link on the landing page. Demo end-state scores 91 to match the hero mock.
-- QR codes are generated locally (`assets/qrcode.min.js`, kazuhikoarase/qrcode-generator, vendored) and point at `child.html?i=N` on whatever host serves the page.
+- **The shell.** Nav and footer come from `supportnow-portfolio-shell`. `shell-app.js` is the
+  live-app build: the shell's own `shell.js` re-renders the nav from `apps.js` to drive its
+  walkthrough demo, which would overwrite a real app's links. Pages set `window.EC_SHELL` to pick
+  the active link and a page specific footer CTA, and the nav and footer mount into
+  `#pfNavMount` / `#pfFootMount`. `child.html` deliberately has no shell: a sitter opens it
+  mid-emergency and should not land on marketing chrome.
+- **State is local.** Everything lives in `localStorage` under `ec.sn.v1`, with an in-memory
+  fallback for browsers that block storage on `file://`. Nothing is sent anywhere.
+- **QR codes** render via `qrcodejs` from cdnjs and fall back to a labelled placeholder offline.
+  Over http they encode a real, scannable `child.html?c=CODE` link on the current origin.
+- **Sample family.** The Whitakers of Kailua load from `EC.sample()`. `sheet.html` falls back to
+  them when no answers exist yet, with a banner saying so. Loading or clearing warns first if there
+  is real work to lose. All names and numbers are fictional.
+- **Print.** The sheet is sized for letter and fits one page up to three children. A fourth pushes
+  to page two, with `break-inside: avoid` keeping rows intact.
+- **Not wired up:** the email capture on the results page and the six and twelve month reminder on
+  the sheet are both stubs, the three expansion buttons all point back at the questionnaire, and
+  there is no real link revocation behind the privacy copy.
+
+Brand tokens match `supportnow-family-advocacy/intake.css` and `supportnow-2.0/styleguide.html`.
+Emergency Contact is presented as part of SupportNow, the Official Family Support Platform.

@@ -1,0 +1,480 @@
+/* ──────────────────────────────────────────────
+   SupportNow · Portfolio Shell
+   The standard navigation + footer shared by every portfolio app.
+   Everything here is prefixed .pf- so it can drop into an existing
+   app without colliding with that app's styles.
+   ────────────────────────────────────────────── */
+
+:root{
+  /* Brand tokens, matched to the existing SupportNow apps */
+  --brand:#188aec; --brand-dark:#1274c9; --brand-light:#4da6f0; --brand-bg:#eef6fe; --navy:#1b2f80;
+  --ink:#111827; --body:#374151; --secondary:#6b7280; --muted:#9ca3af;
+  --border:#e8eaf0; --border-light:#f1f2f6; --bg:#fbfaf8; --card:#ffffff;
+  --give:#059669; /* success, used by the share field's copied state */
+
+  --pf-sans:'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --pf-pill-h:56px;
+  --pf-shadow:0 6px 28px -10px rgba(17,24,39,.16), 0 2px 6px -2px rgba(17,24,39,.06);
+  --pf-shadow-stuck:0 14px 40px -14px rgba(27,47,128,.28), 0 2px 8px -3px rgba(17,24,39,.08);
+}
+
+body{
+  font-family:var(--pf-sans);
+  color:var(--body); background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+a{ text-decoration:none; }
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+   ══════════════════════════════════════════════ */
+
+.pf-nav{
+  position:sticky; top:0; z-index:1030;
+  padding:12px 0 6px;
+  background:linear-gradient(to bottom, var(--bg) 62%, rgba(251,250,248,0));
+}
+
+.pf-pill{
+  position:relative; /* the mega menu spans this */
+  display:flex; align-items:center; justify-content:space-between;
+  gap:20px;
+  height:var(--pf-pill-h);
+  padding:0 12px 0 0;
+  background:var(--card);
+  border:1px solid var(--border-light);
+  border-radius:999px;
+  box-shadow:var(--pf-shadow);
+  transition:box-shadow .22s ease;
+}
+.pf-nav.is-stuck .pf-pill{ box-shadow:var(--pf-shadow-stuck); }
+
+/* ── Brand block: mark + switcher caret | app name ── */
+/* position:static so the mega menu resolves against .pf-pill and can span it */
+.pf-brand{ position:static; display:flex; align-self:stretch; align-items:center; min-width:0; }
+
+/* Runs to the pill's edges rather than sitting inset, so the left cap is the target.
+   Its border-right is the divider, so the line belongs to the toggle once it fills. */
+.pf-switch{
+  display:flex; align-items:center; gap:10px;
+  align-self:stretch;
+  background:none;
+  border:0; border-right:1px solid var(--border);
+  padding:0 22px 0 26px;
+  border-radius:999px 0 0 999px;
+  cursor:pointer;
+  transition:background .16s ease;
+}
+.pf-switch:hover{ background:#f7f8fa; }
+.pf-switch:focus-visible{ outline:2px solid var(--brand); outline-offset:-3px; }
+.pf-switch[aria-expanded="true"]{ background:#eceef4; }
+.pf-mark{ height:26px; width:auto; display:block; }
+.pf-caret{ font-size:14px; color:var(--muted); transition:transform .2s ease; }
+.pf-switch[aria-expanded="true"] .pf-caret{ transform:rotate(180deg); color:var(--secondary); }
+
+.pf-app{
+  font-family:var(--pf-sans);
+  font-size:21px; font-weight:700; line-height:1;
+  color:var(--ink);
+  letter-spacing:-.025em;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  margin-left:22px;
+  transition:color .15s ease;
+}
+.pf-app:hover{ color:var(--brand); }
+
+/* ── Right side: links + CTA ── */
+.pf-links{ display:flex; align-items:center; gap:30px; }
+
+.pf-link{
+  position:relative;
+  font-size:15px; font-weight:500;
+  color:var(--secondary);
+  padding:6px 0;
+  white-space:nowrap;
+  transition:color .15s ease;
+}
+.pf-link:hover{ color:var(--ink); }
+.pf-link::after{
+  content:''; position:absolute; left:0; right:0; bottom:-2px;
+  height:2px; border-radius:2px; background:var(--brand);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .2s ease;
+}
+.pf-link.is-active{ color:var(--brand); font-weight:600; }
+.pf-link.is-active::after{ transform:scaleX(1); }
+
+.pf-cta{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--pf-sans);
+  font-size:14.5px; font-weight:600;
+  color:#fff; background:var(--brand);
+  border:0; border-radius:999px;
+  padding:9px 21px;
+  margin-left:4px;
+  white-space:nowrap;
+  transition:.18s ease;
+}
+.pf-cta:hover{
+  color:#fff; background:var(--brand-dark);
+  transform:translateY(-1px);
+  box-shadow:0 12px 24px -12px var(--brand);
+}
+.pf-cta i{ font-size:12px; }
+
+/* ── Mobile trigger ── */
+.pf-burger{
+  display:none;
+  width:46px; height:46px; margin-right:6px;
+  align-items:center; justify-content:center;
+  background:var(--brand-bg); color:var(--brand-dark);
+  border:0; border-radius:50%; font-size:17px;
+}
+
+/* ══════════════════════════════════════════════
+   APP SWITCHER — mega menu
+   ══════════════════════════════════════════════ */
+
+/* Spans the full pill. Needs data-bs-display="static" on the toggle so Popper
+   leaves the position alone and these rules hold. */
+.dropdown-menu.pf-mega{
+  --bs-dropdown-padding-y:0;
+  --bs-dropdown-border-color:var(--border-light);
+  --bs-dropdown-border-radius:18px;
+  /* Set directly, not via --bs-dropdown-box-shadow: Bootstrap ships with
+     $enable-shadows false, so .dropdown-menu never emits the property. */
+  box-shadow:
+    0 28px 56px -16px rgba(27,47,128,.30),
+    0 10px 22px -8px rgba(17,24,39,.14),
+    0 2px 6px -2px rgba(17,24,39,.08);
+  /* Colour of the pointer. The panel's top-left corner is plain card white. */
+  --pf-point:var(--card);
+  position:absolute;
+  top:100%; left:0; right:auto;
+  width:min(700px, calc(100vw - 40px));
+  min-width:0;
+  margin-top:20px;
+  overflow:visible;
+}
+
+/* Pointer back up to the caret that opened this. `left` is hand-measured against
+   the caret's centre, so re-check it if the mark size or .pf-switch padding change. */
+.pf-mega::before{
+  content:''; position:absolute; z-index:1;
+  top:-7px; left:81px; width:15px; height:15px;
+  background:var(--pf-point);
+  border-top:1px solid var(--border-light);
+  border-left:1px solid var(--border-light);
+  border-radius:4px 0 0 0;
+  transform:rotate(45deg);
+}
+
+/* Footer copy of the switcher: same panel, opening upward from its button.
+   Anchored to the button rather than the footer container, so it stays next
+   to what was clicked instead of floating above the whole section. */
+.dropdown-menu.pf-mega-up{
+  top:auto; bottom:100%; left:0; right:auto;
+  width:min(700px, calc(100vw - 48px));
+  margin:0 0 14px;
+}
+.pf-mega-up::before{
+  top:auto; bottom:-8px; left:38px;
+  border-top:0; border-left:0;
+  border-bottom:1px solid var(--border-light);
+  border-right:1px solid var(--border-light);
+  border-radius:0 0 5px 0;
+}
+
+/* Clipping lives here so the pointer above can sit outside the panel */
+.pf-mega-grid{
+  border-radius:18px; overflow:hidden;
+}
+
+/* Order is platform bar, app grid, compare bar. Set by DOM order, not CSS. */
+.pf-mega-main{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:16px; }
+
+.pf-mega-compare{
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  padding:9px 10px 9px 22px;
+  border-radius:11px; background:var(--brand-bg);
+}
+.pf-mega-compare span{ font-size:17px; font-weight:700; letter-spacing:-.02em; color:var(--navy); }
+.pf-mega-btn{
+  flex:0 0 auto;
+  padding:11px 20px; border-radius:8px;
+  background:var(--brand); color:#fff;
+  font-size:14.5px; font-weight:700;
+  transition:.16s ease;
+}
+.pf-mega-btn:hover{ background:var(--brand-dark); color:#fff; }
+.pf-mega-btn i{ font-size:11px; margin-left:6px; }
+
+.pf-mega-apps{
+  display:grid; grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:4px 14px; padding:4px 6px;
+}
+.pf-mega-item{
+  display:flex; align-items:center; gap:12px;
+  padding:11px 12px; border-radius:10px;
+  transition:background .14s ease;
+}
+.pf-mega-item i{ margin-right:4px; }
+.pf-mega-item:hover{ background:var(--border-light); }
+.pf-mega-item i{
+  flex:0 0 30px; text-align:center;
+  font-size:20px; color:var(--brand);
+}
+.pf-mega-name{ font-size:16.5px; font-weight:600; letter-spacing:-.015em; color:var(--ink); }
+.pf-mega-item.is-current .pf-mega-name{ color:var(--brand-dark); }
+/* Sits right after the name, not pushed to the column edge, so it can't
+   be misread as labelling the app in the next column. */
+.pf-mega-here{
+  flex:0 0 auto; padding:3px 8px; border-radius:5px;
+  background:var(--brand-bg); color:var(--brand-dark);
+  font-size:9.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+}
+
+.pf-mega-platform{
+  display:flex; align-items:center; gap:14px;
+  padding:14px 22px; border-radius:11px;
+  background:linear-gradient(90deg, #ecfdf5 0%, var(--brand-bg) 46%, #fdf1f4 100%);
+  transition:filter .16s ease;
+}
+.pf-mega-platform:hover{ filter:brightness(1.02) saturate(1.1); }
+.pf-mega-platform .pf-platform-mark{ height:19px; width:auto; }
+.pf-plus{
+  padding:3px 9px; border-radius:5px;
+  background:var(--brand); color:#fff;
+  font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+}
+.pf-mega-platform .cap{ font-size:14.5px; font-weight:600; color:var(--navy); margin-left:6px; }
+.pf-mega-platform i{ margin-left:auto; font-size:12px; color:var(--navy); }
+
+/* ══════════════════════════════════════════════
+   MOBILE OFFCANVAS
+   ══════════════════════════════════════════════ */
+
+.pf-oc{ --bs-offcanvas-width:min(340px, 88vw); border:0 !important; }
+.pf-oc .offcanvas-header{ padding:22px 24px 8px; }
+.pf-oc .offcanvas-body{ padding:8px 24px 28px; display:flex; flex-direction:column; }
+.pf-oc-app{ font-family:var(--pf-sans); font-size:22px; font-weight:700; letter-spacing:-.025em; color:var(--ink); line-height:1; }
+.pf-oc-link{
+  font-size:17px; font-weight:500; color:var(--body);
+  padding:14px 0; border-bottom:1px solid var(--border-light);
+}
+.pf-oc-link.is-active{ color:var(--brand); font-weight:600; }
+.pf-oc .pf-cta{ margin:22px 0 0; justify-content:center; padding:16px 26px; }
+.pf-oc-more{
+  margin-top:26px; padding-top:20px; border-top:1px solid var(--border);
+}
+.pf-oc-more h6{
+  font-size:11.5px; font-weight:700; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:12px;
+}
+.pf-oc-more a{
+  display:flex; align-items:center; gap:11px;
+  padding:9px 0; font-size:15px; color:var(--secondary);
+}
+.pf-oc-more a i{ width:18px; text-align:center; color:var(--brand); font-size:13px; }
+
+/* ══════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════ */
+
+/* Full-bleed band; the container inside lines the content up with the page. */
+.pf-foot{
+  margin-top:90px;
+  background:var(--card);
+  border-top:1px solid var(--border-light);
+}
+.pf-foot-inner{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr);
+  gap:56px;
+  padding:56px 0 48px;
+}
+
+/* ── Col 1 · identity ── */
+.pf-applogo{ display:flex; align-items:baseline; flex-wrap:wrap; gap:0 10px; }
+.pf-applogo-name{
+  font-size:27px; font-weight:700; letter-spacing:-.03em; color:var(--ink); line-height:1.1;
+}
+.pf-applogo-by{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12.5px; color:var(--muted); white-space:nowrap;
+}
+.pf-applogo-by img{ height:15px; width:auto; display:block; }
+
+.pf-foot-appdesc{
+  margin:14px 0 0; max-width:330px;
+  font-size:15px; line-height:1.6; color:var(--body);
+}
+
+.pf-foot-switch-wrap{ position:relative; margin-top:20px; }
+.pf-youre-on{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 18px;
+  background:var(--card); border:1px solid var(--border); border-radius:999px;
+  font-family:var(--pf-sans); font-size:13.5px; color:var(--secondary);
+  cursor:pointer; transition:.16s ease;
+}
+.pf-youre-on b{ font-weight:700; font-size:14.5px; letter-spacing:-.02em; color:var(--ink); }
+.pf-youre-on i{ font-size:10px; color:var(--muted); transition:transform .2s ease; }
+.pf-youre-on:hover{ border-color:var(--brand-light); background:#f7f8fa; }
+.pf-youre-on[aria-expanded="true"]{ background:#eceef4; border-color:var(--border); }
+.pf-youre-on[aria-expanded="true"] i{ transform:rotate(180deg); }
+
+/* ── Col 2 · primary call to action ── */
+.pf-foot-act h4,
+.pf-foot-share h4{
+  font-size:19px; font-weight:700; letter-spacing:-.025em; color:var(--ink); margin:0 0 10px;
+}
+.pf-foot-act p,
+.pf-foot-share p{
+  font-size:14.5px; line-height:1.6; color:var(--secondary); margin:0 0 20px; max-width:330px;
+}
+.pf-foot-act .pf-cta{ margin-left:0; }
+
+/* ── Col 3 · share ── */
+.pf-share-field{
+  display:flex; align-items:center; gap:8px;
+  padding:6px 6px 6px 16px;
+  border:1px solid var(--border); border-radius:999px;
+  background:var(--bg);
+  max-width:340px;
+}
+.pf-share-field input{
+  flex:1 1 auto; min-width:0;
+  border:0; background:none; outline:none;
+  font-family:var(--pf-sans); font-size:14px; color:var(--secondary);
+  text-overflow:ellipsis;
+}
+.pf-share-field button{
+  flex:0 0 auto;
+  padding:9px 18px; border:0; border-radius:999px;
+  background:var(--ink); color:#fff;
+  font-family:var(--pf-sans); font-size:13.5px; font-weight:600;
+  cursor:pointer; transition:.16s ease;
+}
+.pf-share-field button:hover{ background:#000; }
+.pf-share-field button.copied{ background:var(--give); }
+
+/* ── Lower footer · the ecosystem, not this app ── */
+.pf-foot-bar{
+  border-top:1px solid var(--border-light);
+  background:var(--card);
+}
+.pf-foot-bar-inner{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+  gap:14px 26px;
+  padding:22px 0;
+  font-size:13.5px; color:var(--muted);
+}
+.pf-socials{ display:flex; align-items:center; gap:10px; }
+.pf-socials a{
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--border-light); color:var(--secondary);
+  font-size:14px; transition:.16s ease;
+}
+.pf-socials a:hover{ background:var(--brand); color:#fff; }
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════ */
+
+@media (max-width:1199.98px){
+  .pf-links{ gap:22px; }
+  .pf-app{ font-size:22px; }
+  .pf-mega-compare span{ font-size:15.5px; }
+  .pf-mega-name{ font-size:15.5px; }
+}
+
+@media (max-width:991.98px){
+  :root{ --pf-pill-h:52px; }
+  .pf-nav{ padding:10px 0 6px; }
+  .pf-pill{ padding:0 7px 0 0; }
+  .pf-links{ display:none; }
+  .pf-burger{ display:flex; width:38px; height:38px; font-size:15px; }
+  .pf-mark{ height:23px; }
+  .pf-switch{ padding:0 15px 0 19px; }
+  .pf-app{ font-size:19px; margin-left:15px; }
+
+  /* No room for the banner or a two column list. The offcanvas carries the
+     fuller version, so the dropdown falls back to a plain list of apps. */
+  .dropdown-menu.pf-mega{ margin-top:14px; }
+  .pf-mega-compare{ display:none; }
+  .pf-mega-main{ padding:8px; gap:8px; }
+  .pf-mega-apps{ grid-template-columns:1fr; gap:2px; padding:0; }
+  .pf-mega-platform{ padding:13px 16px; }
+  .pf-mega-platform .cap,
+  .pf-mega-platform .pf-plus{ display:none; }
+  .pf-mega::before{ left:36px; }
+  /* Opening upward from the footer there is rarely room for the full list */
+  .pf-mega-up .pf-mega-grid{ max-height:min(58vh, 400px); overflow-y:auto; }
+
+  .pf-foot-inner{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:34px 40px; padding:44px 0 38px; }
+  .pf-foot-id{ grid-column:1 / -1; }
+}
+
+@media (max-width:575.98px){
+  .pf-pill{ padding:0 8px 0 0; }
+  .pf-switch{ padding:0 13px 0 16px; }
+  .pf-app{ font-size:18px; margin-left:13px; }
+  .pf-foot-inner{ grid-template-columns:1fr; gap:30px; }
+  .pf-foot-bar-inner{ flex-direction:column; align-items:flex-start; }
+}
+
+/* ══════════════════════════════════════════════
+   DEMO PAGE ONLY — not part of the shell
+   ══════════════════════════════════════════════ */
+
+.demo-hero{ padding:76px 0 40px; text-align:center; }
+.demo-hero .eyebrow{
+  font-size:12.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--brand);
+}
+.demo-hero h1{
+  font-size:clamp(2rem,4.2vw,3.05rem); font-weight:700; letter-spacing:-.025em;
+  color:var(--ink); line-height:1.1; margin:14px 0 16px; text-wrap:balance;
+}
+.demo-hero p{ font-size:1.1rem; color:var(--secondary); max-width:600px; margin:0 auto; }
+
+.demo-panel{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:22px; padding:26px 28px; margin-top:44px;
+}
+.demo-panel h2{
+  font-size:12.5px; font-weight:700; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 4px;
+}
+.demo-panel .hint{ font-size:14.5px; color:var(--secondary); margin:0 0 20px; }
+.demo-chips{ display:flex; flex-wrap:wrap; gap:10px; }
+.demo-chip{
+  display:inline-flex; align-items:center; gap:9px;
+  padding:10px 17px; border-radius:999px;
+  border:1.5px solid var(--border); background:#fff;
+  font-size:14.5px; font-weight:500; color:var(--body);
+  cursor:pointer; transition:.15s ease;
+}
+.demo-chip:hover{ border-color:var(--brand-light); color:var(--ink); }
+.demo-chip.on{ background:var(--brand); border-color:var(--brand); color:#fff; }
+.demo-chip.on i{ color:#fff; }
+.demo-chip i{ font-size:13px; color:var(--brand); }
+
+.demo-note{
+  display:flex; gap:12px; align-items:flex-start;
+  margin-top:22px; padding:15px 18px;
+  background:var(--brand-bg); border-radius:14px;
+  font-size:14px; line-height:1.55; color:var(--body);
+}
+.demo-note i{ color:var(--brand-dark); margin-top:3px; }
+
+.demo-filler{ padding:60px 0 10px; }
+.demo-filler .box{
+  height:150px; border-radius:20px;
+  border:1.5px dashed var(--border);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--muted); font-size:14.5px;
+}

@@ -14,139 +14,212 @@
 <link href="assets/ec.css" rel="stylesheet">
 
 <style>
-body{background:#f2f4f8}
-.phone-shell{max-width:480px; margin:0 auto; padding:18px 16px 60px}
+body{background:#eef1f6}
+.phone{max-width:480px; margin:0 auto; padding:16px 15px 60px}
+
 .sos{
-  background:#fff1f2; border:1.5px solid #fecdd3; color:#9f1239; border-radius:14px;
-  padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px;
-  font-weight:700; font-size:14px; margin-bottom:14px;
+  background:var(--rose-tint); border:1.5px solid var(--rose-border); border-radius:14px;
+  padding:11px 13px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin-bottom:13px;
 }
-.sos a{background:#e11d48; color:#fff; border-radius:50px; padding:8px 18px; font-weight:800; font-size:14px; white-space:nowrap}
-.kid-hero{display:flex; align-items:center; gap:14px; padding:6px 4px 16px}
-.avatar{
-  width:58px; height:58px; border-radius:50%; background:var(--navy); color:#fff;
-  display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:800; flex-shrink:0;
+.sos span{font-weight:800; font-size:14px; color:var(--rose-dark)}
+.sos a{background:var(--rose); color:#fff; border-radius:50px; padding:8px 20px; font-weight:800; font-size:14px; white-space:nowrap}
+
+.hero-card{background:#fff; border:1px solid var(--border); border-radius:18px; padding:20px 18px; box-shadow:var(--shadow); margin-bottom:13px}
+.hero-card h1{font-size:1.5rem; margin:0 0 3px}
+.hero-card .sub{font-size:13.5px; color:var(--secondary); font-weight:600}
+
+.callrow{display:flex; gap:9px; margin-top:15px}
+.callrow a{
+  flex:1; background:var(--brand-bg); border:1.5px solid #cfe6fb; border-radius:12px;
+  padding:10px 8px; text-align:center; font-weight:700; font-size:13.5px; color:var(--brand-dark); line-height:1.3;
 }
-.kid-hero h1{font-size:1.6rem; margin:0; line-height:1.1}
-.kid-hero .meta{font-size:13px; color:var(--secondary); font-weight:600}
-.pcard{background:#fff; border:1px solid var(--border); border-radius:18px; padding:18px 18px 8px; margin-bottom:14px; box-shadow:var(--shadow)}
-.pcard h2{font-size:12px; text-transform:uppercase; letter-spacing:.09em; color:var(--secondary); margin-bottom:12px; display:flex; align-items:center; gap:8px}
-.pcard h2 i{color:var(--brand)}
-.pcard.warn{border-color:#fecdd3; background:#fffafb}
-.pcard.warn h2 i{color:#e11d48}
-.prow{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 0; border-top:1px solid var(--border-light)}
-.prow:first-of-type{border-top:0}
-.prow .l b{display:block; font-size:15px; color:var(--ink)}
-.prow .l span{font-size:12.5px; color:var(--secondary)}
-.call-btn{
-  border:1.5px solid var(--border); color:var(--brand-dark); border-radius:50px; padding:7px 15px;
-  font-weight:800; font-size:13.5px; white-space:nowrap; background:#fff;
+.callrow a small{display:block; font-weight:600; font-size:11px; color:var(--secondary); margin-top:1px}
+.callrow a:hover{background:#dcedfd}
+
+.block{background:#fff; border:1px solid var(--border); border-radius:18px; padding:18px; box-shadow:var(--shadow); margin-bottom:13px}
+.block h2{
+  font-size:11px; font-weight:800; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--secondary); margin:0 0 11px; display:flex; align-items:center; gap:7px;
 }
-.call-btn i{margin-right:5px}
-.fact{padding:9px 0 13px; border-top:1px solid var(--border-light)}
-.fact:first-of-type{border-top:0; padding-top:0}
-.fact .lbl{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:2px}
-.fact .val{font-size:15px; color:var(--ink); font-weight:500}
-.allergy-big{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px}
-.foot-note{text-align:center; font-size:12px; color:var(--muted); font-weight:600; margin-top:22px}
-.foot-note img{height:14px; opacity:.85; vertical-align:-2px}
+.block h2 i{font-size:12px}
+.block.alert-block{border-color:var(--rose-border); background:var(--rose-tint)}
+.block.alert-block h2{color:var(--rose-dark)}
+
+.med{background:#eef2ff; border:1px solid #c7d2fe; border-radius:12px; padding:11px 13px; margin-bottom:9px}
+.med:last-child{margin-bottom:0}
+.med b{color:var(--navy); font-weight:800; font-size:14px}
+.med p{margin:2px 0 0; font-size:13px; color:var(--body); line-height:1.5}
+
+.kv{display:flex; justify-content:space-between; gap:14px; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:14px}
+.kv:last-child{border-bottom:0}
+.kv .k{color:var(--secondary); font-weight:600; flex-shrink:0}
+.kv .v{color:var(--ink); font-weight:600; text-align:right}
+.kv .v a{color:var(--brand); font-weight:700}
+
+.person{display:flex; align-items:center; gap:11px; padding:9px 0; border-bottom:1px solid var(--border-light)}
+.person:last-child{border-bottom:0}
+.person .av{
+  width:36px; height:36px; border-radius:50%; background:var(--brand-bg); color:var(--brand-dark);
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex-shrink:0;
+}
+.person .who{flex:1; min-width:0}
+.person .who b{display:block; font-size:14.5px; color:var(--ink)}
+.person .who span{font-size:12.5px; color:var(--secondary)}
+.person .tel{color:var(--brand); font-weight:700; font-size:14px; white-space:nowrap}
+
+.note{font-size:13.5px; color:var(--body); line-height:1.6; margin:0}
+.stamp{text-align:center; font-size:12px; color:var(--muted); font-weight:600; padding:8px 0 0}
+.stamp img{height:19px; opacity:.65; display:block; margin:6px auto 0}
+.switcher{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:13px}
+.switcher a{
+  background:#fff; border:1.5px solid var(--border); border-radius:50px; padding:6px 15px;
+  font-size:13px; font-weight:700; color:var(--secondary);
+}
+.switcher a.on{background:var(--brand); border-color:var(--brand); color:#fff}
 </style>
 </head>
 <body>
 
-<div class="phone-shell">
-  <div class="d-flex align-items-center justify-content-between py-2 mb-1">
-    <span style="font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--secondary)"><i class="fa-solid fa-heart-pulse me-1" style="color:var(--rose)"></i> Emergency Contact</span>
-    <span style="font-size:12px; color:var(--muted); font-weight:600" id="famTag"></span>
-  </div>
-
-  <div id="mount"></div>
-
-  <div class="foot-note">
-    Kept current by the family. This page updates the moment they do.<br>
-    Powered by <img src="assets/logo.svg" alt="SupportNow"> &middot; <a href="index.html" style="color:var(--brand); font-weight:700">Make one for your family</a>
-  </div>
+<div class="phone">
+  <div id="view"></div>
 </div>
 
-<script src="assets/qrcode.min.js"></script>
 <script src="assets/ec.js"></script>
 <script>
-let state = EC.load();
-const i = parseInt(new URLSearchParams(location.search).get('i') || '0', 10);
-if (new URLSearchParams(location.search).has('demo') && (!state.kids[i] || !state.kids[i].name)) {
-  state = EC.seedDemo();
-}
-const k = state.kids[i];
-const mount = document.getElementById('mount');
+(function () {
+  var state = EC.load();
+  if (!state.children.length) state = EC.sample();
 
-function esc(s) { const d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
-function tel(n) { return 'tel:' + (n || '').replace(/[^0-9+]/g, ''); }
-function fact(lbl, val) { return val ? '<div class="fact"><div class="lbl">' + lbl + '</div><div class="val">' + esc(val) + '</div></div>' : ''; }
+  function param(name) {
+    var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
 
-if (!k || !k.name) {
-  mount.innerHTML =
-    '<div class="pcard" style="text-align:center; padding:36px 24px">' +
-      '<div class="icon-tile" style="margin:0 auto 16px"><i class="fa-solid fa-qrcode"></i></div>' +
-      '<h2 style="all:unset; font-weight:700; font-size:1.15rem; color:var(--ink); display:block; margin-bottom:8px">This QR would open a child\'s page</h2>' +
-      '<p style="font-size:14px; color:var(--secondary)">In the real product this link is private and always current. On this device there is no Emergency Card yet.</p>' +
-      '<a class="btn btn-brand btn-sm-x mt-2" href="child.html?i=0&demo=1" onclick="EC.seedDemo()">Show me with the demo family</a>' +
-    '</div>';
-} else {
-  const f = state.family, c = state.care;
-  document.getElementById('famTag').textContent = f.familyName ? 'The ' + f.familyName + ' Family' : '';
-  const meta = [EC.age(k.born) !== '' ? 'Age ' + EC.age(k.born) : '', k.born ? 'born ' + k.born : '', k.blood && k.blood !== 'Unknown' ? 'Blood type ' + k.blood : ''].filter(Boolean).join(' • ');
+  var code = param('c');
+  var child = state.children.filter(function (c) {
+    return (c.code || EC.makeCode(c.id)) === code;
+  })[0] || state.children[0];
 
-  const people = [];
-  if (f.p1name) people.push({ name: f.p1name, rel: 'Parent', phone: f.p1phone });
-  if (f.p2name) people.push({ name: f.p2name, rel: 'Parent', phone: f.p2phone });
-  state.contacts.filter(function (x) { return x.name; }).forEach(function (x) {
-    people.push({ name: x.name, rel: x.rel || 'Emergency contact', phone: x.phone });
-  });
+  var view = document.getElementById('view');
 
-  let html =
-    '<div class="sos"><span><i class="fa-solid fa-circle-exclamation me-1"></i> Real emergency? Call 911 first.</span><a href="tel:911">Call 911</a></div>' +
-    '<div class="kid-hero">' +
-      '<div class="avatar">' + esc(k.name[0].toUpperCase()) + '</div>' +
-      '<div><h1>' + esc(k.name) + '</h1><div class="meta">' + esc(meta) + '</div></div>' +
-    '</div>';
+  if (!child) {
+    view.innerHTML = '<div class="block"><h2><i class="fa-solid fa-circle-question"></i> Not found</h2>' +
+      '<p class="note">This code does not match a child on file. Ask the family for a current sheet.</p></div>';
+    return;
+  }
 
-  html += '<div class="pcard"><h2><i class="fa-solid fa-phone"></i> Call first</h2>' +
-    people.map(function (p) {
-      return '<div class="prow"><div class="l"><b>' + esc(p.name) + '</b><span>' + esc(p.rel) + '</span></div>' +
-        (p.phone ? '<a class="call-btn" href="' + tel(p.phone) + '"><i class="fa-solid fa-phone"></i>' + esc(p.phone) + '</a>' : '') + '</div>';
+  var age = EC.age(child.dob);
+  var initials = child.name.split(' ').map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase();
+  var tel = function (n) { return 'tel:' + String(n).replace(/[^0-9+]/g, ''); };
+
+  var html = '';
+
+  /* Other kids on the same sheet, so a sitter is never stuck on one child */
+  if (state.children.length > 1) {
+    html += '<div class="switcher">' + state.children.map(function (c) {
+      var cd = c.code || EC.makeCode(c.id);
+      return '<a href="child.html?c=' + encodeURIComponent(cd) + '"' +
+        (c === child ? ' class="on"' : '') + '>' + EC.esc(c.name.split(' ')[0]) + '</a>';
     }).join('') + '</div>';
-
-  if (k.allergies || k.noAllergies) {
-    html += '<div class="pcard' + (k.allergies ? ' warn' : '') + '"><h2><i class="fa-solid fa-triangle-exclamation"></i> Allergies</h2>' +
-      '<div class="allergy-big">' +
-        (k.allergies
-          ? k.allergies.split(',').map(function (a) { return '<span class="chip chip-allergy" style="font-size:14px; padding:6px 12px"><i class="fa-solid fa-triangle-exclamation"></i>' + esc(a.trim()) + '</span>'; }).join('')
-          : '<span class="chip chip-ok" style="font-size:14px; padding:6px 12px">No known allergies</span>') +
-      '</div>' +
-      fact('If a reaction happens', k.reactions) + '</div>';
   }
 
-  if (k.meds || k.conditions) {
-    html += '<div class="pcard"><h2><i class="fa-solid fa-pills"></i> Meds and conditions</h2>' +
-      fact('Medications and doses', k.meds) +
-      fact('Conditions', k.conditions) + '</div>';
-  }
+  html += '<div class="sos"><span><i class="fa-solid fa-triangle-exclamation me-1"></i> Life threatening? Call 911 first.</span>' +
+    '<a href="tel:911">911</a></div>';
 
-  html += '<div class="pcard"><h2><i class="fa-solid fa-user-doctor"></i> Care team</h2>' +
-    (k.doctor ? '<div class="prow"><div class="l"><b>' + esc(k.doctor) + '</b><span>Pediatrician</span></div>' +
-      (k.doctorPhone ? '<a class="call-btn" href="' + tel(k.doctorPhone) + '"><i class="fa-solid fa-phone"></i>Call</a>' : '') + '</div>' : '') +
-    fact('Dentist', k.dentist) +
-    fact('Preferred hospital', f.hospital) +
-    fact('Insurance', [f.insProvider, f.insId ? 'Member ID ' + f.insId : ''].filter(Boolean).join(' • ')) +
+  /* Identity and the two fastest numbers */
+  html += '<div class="hero-card">' +
+    '<h1>' + EC.esc(child.name) + '</h1>' +
+    '<div class="sub">' + (age != null ? 'Age ' + age : '') +
+      (child.school ? (age != null ? ' · ' : '') + EC.esc(child.school) : '') + '</div>';
+
+  var callable = state.parents.filter(function (p) { return p.name && p.phone; });
+  if (callable.length) {
+    html += '<div class="callrow">' + callable.map(function (p) {
+      return '<a href="' + tel(p.phone) + '"><i class="fa-solid fa-phone me-1"></i> ' +
+        EC.esc(p.relation || p.name.split(' ')[0]) + '<small>' + EC.esc(p.phone) + '</small></a>';
+    }).join('') + '</div>';
+  }
+  html += '</div>';
+
+  /* Allergies lead, because that is what someone scans this for */
+  var hasAllergies = child.allergies && child.allergies.length;
+  html += '<div class="block' + (hasAllergies ? ' alert-block' : '') + '">' +
+    '<h2><i class="fa-solid fa-triangle-exclamation"></i> Allergies</h2>' +
+    (hasAllergies
+      ? '<div class="d-flex flex-wrap gap-2">' + child.allergies.map(function (a) {
+          return '<span class="chip chip-allergy">' + EC.esc(a) + '</span>';
+        }).join('') + '</div>'
+      : '<p class="note">No known allergies.</p>') +
     '</div>';
 
-  const good = [fact('Where emergency supplies live', c.firstAid), fact('Approved pickup list', c.pickup), fact('About ' + k.name, k.notes), fact('House notes', c.notes)].join('');
-  if (good) html += '<div class="pcard"><h2><i class="fa-solid fa-lightbulb"></i> Good to know</h2>' + good + '</div>';
+  var meds = (child.meds || []).filter(function (m) { return m.name; });
+  if (meds.length) {
+    html += '<div class="block"><h2><i class="fa-solid fa-pills"></i> Medication</h2>' +
+      meds.map(function (m) {
+        return '<div class="med"><b>' + EC.esc(m.name) + (m.dose ? ', ' + EC.esc(m.dose) : '') + '</b>' +
+          (m.when ? '<p>' + EC.esc(m.when) + '</p>' : '') + '</div>';
+      }).join('') + '</div>';
+  }
 
-  html += '<div class="text-center mt-3" style="font-size:12px; color:var(--muted); font-weight:600">Updated ' + EC.fmtDate(state.updatedAt) + '</div>';
-  mount.innerHTML = html;
-}
+  if (child.conditions) {
+    html += '<div class="block"><h2><i class="fa-solid fa-notes-medical"></i> Good to know</h2>' +
+      '<p class="note">' + EC.esc(child.conditions) + '</p></div>';
+  }
 
+  /* Doctor and insurance */
+  var m = state.medical, rows = '';
+  if (m.pediatrician.name) {
+    rows += '<div class="kv"><span class="k">Pediatrician</span><span class="v">' + EC.esc(m.pediatrician.name) +
+      (m.pediatrician.phone ? '<br><a href="' + tel(m.pediatrician.phone) + '">' + EC.esc(m.pediatrician.phone) + '</a>' : '') +
+      '</span></div>';
+  }
+  if (m.insurance.carrier) {
+    rows += '<div class="kv"><span class="k">Insurance</span><span class="v">' + EC.esc(m.insurance.carrier) +
+      (m.insurance.memberId ? '<br>' + EC.esc(m.insurance.memberId) : '') + '</span></div>';
+  }
+  if (m.urgentCare) rows += '<div class="kv"><span class="k">Urgent care</span><span class="v">' + EC.esc(m.urgentCare) + '</span></div>';
+  if (m.hospital) rows += '<div class="kv"><span class="k">Hospital</span><span class="v">' + EC.esc(m.hospital) + '</span></div>';
+  if (m.consent) rows += '<div class="kv"><span class="k">Consent form</span><span class="v">Signed and on file</span></div>';
+  if (rows) html += '<div class="block"><h2><i class="fa-solid fa-stethoscope"></i> Doctor and insurance</h2>' + rows + '</div>';
+
+  /* Trusted adults */
+  var adults = state.contacts.filter(function (c) { return c.name && c.phone; });
+  if (adults.length) {
+    html += '<div class="block"><h2><i class="fa-solid fa-user-group"></i> If you cannot reach a parent</h2>' +
+      adults.map(function (c) {
+        var av = c.name.split(' ').map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase();
+        var tags = [c.relation, c.pickup ? 'Cleared for pickup' : null].filter(Boolean).join(' · ');
+        return '<div class="person"><span class="av">' + EC.esc(av) + '</span>' +
+          '<span class="who"><b>' + EC.esc(c.name) + '</b><span>' + EC.esc(tags) + '</span></span>' +
+          '<a class="tel" href="' + tel(c.phone) + '">' + EC.esc(c.phone) + '</a></div>';
+      }).join('') + '</div>';
+  }
+
+  /* Routine last. It matters at bedtime, not in a crisis. */
+  if (child.routine || child.comfort) {
+    html += '<div class="block"><h2><i class="fa-solid fa-moon"></i> Routine</h2>';
+    if (child.routine) html += '<p class="note mb-2">' + EC.esc(child.routine) + '</p>';
+    if (child.comfort) html += '<p class="note"><b>Comfort:</b> ' + EC.esc(child.comfort) + '</p>';
+    html += '</div>';
+  }
+
+  if (state.family.address || state.family.notes) {
+    html += '<div class="block"><h2><i class="fa-solid fa-house"></i> Home</h2>' +
+      (state.family.address
+        ? '<div class="kv"><span class="k">Address</span><span class="v">' + EC.esc(state.family.address) +
+          (state.family.city ? '<br>' + EC.esc(state.family.city) : '') + '</span></div>'
+        : '') +
+      (state.family.notes ? '<p class="note mt-2">' + EC.esc(state.family.notes) + '</p>' : '') +
+      '</div>';
+  }
+
+  html += '<div class="stamp">Updated ' + EC.esc(EC.fmtDate(state.updatedAt) || EC.fmtDate(new Date().toISOString())) +
+    '<img src="logo.svg" alt="SupportNow"></div>';
+
+  view.innerHTML = html;
+  document.title = child.name + ' | Emergency Contact';
+})();
 </script>
 </body>
 </html>

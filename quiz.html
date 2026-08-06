@@ -4,292 +4,301 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids Safety Score | Emergency Contact by SupportNow</title>
-<meta name="description" content="Ten honest questions about what would happen if you were unreachable. Get your Kids Safety Score in two minutes.">
+<meta name="description" content="Nine quick questions about what would happen if someone else had your kids tomorrow. Get your Kids Safety Score in two minutes.">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link href="shell.css" rel="stylesheet">
 <link href="assets/ec.css" rel="stylesheet">
 
 <style>
-.quiz-shell{max-width:640px; margin:0 auto; padding:48px 20px 80px}
-.progress-track{height:7px; border-radius:50px; background:var(--border-light); overflow:hidden; margin-bottom:10px}
-.progress-fill{height:100%; border-radius:50px; background:var(--brand); transition:width .35s cubic-bezier(.22,1,.36,1)}
-.progress-label{font-size:12.5px; font-weight:700; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+.quiz-shell{max-width:660px; margin:0 auto; padding:44px 20px 90px}
+.progress-track{height:7px; border-radius:50px; background:var(--border-light); overflow:hidden; margin-bottom:9px}
+.progress-fill{height:100%; border-radius:50px; background:var(--brand); width:0; transition:width .35s cubic-bezier(.22,1,.36,1)}
+.progress-meta{display:flex; justify-content:space-between; font-size:13px; font-weight:600; color:var(--secondary); margin-bottom:28px}
 
-.q-card{background:#fff; border:1px solid var(--border); border-radius:22px; padding:34px 32px; box-shadow:var(--shadow-md); margin-top:18px}
-.q-card h2{font-size:clamp(1.25rem,2.4vw,1.55rem); margin-bottom:6px}
-.q-sub{font-size:14px; color:var(--secondary); margin-bottom:22px}
-.opt{
+.q-card{background:#fff; border:1px solid var(--border); border-radius:22px; box-shadow:var(--shadow); padding:34px 30px}
+.q-num{font-size:12.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--brand); margin-bottom:12px; display:block}
+.q-text{font-size:clamp(1.25rem,2.4vw,1.55rem); color:var(--ink); font-weight:700; letter-spacing:-.02em; line-height:1.3; margin-bottom:26px}
+
+.answers{display:flex; flex-direction:column; gap:11px}
+.answer{
   display:flex; align-items:center; gap:13px; width:100%; text-align:left;
-  border:1.5px solid var(--border); background:#fff; border-radius:14px;
-  padding:14px 16px; font-size:15.5px; font-weight:600; color:var(--ink);
-  margin-bottom:10px; transition:.14s; cursor:pointer;
+  background:#fff; border:1.5px solid var(--border); border-radius:14px;
+  padding:15px 18px; font-size:15.5px; font-weight:600; color:var(--ink);
+  cursor:pointer; transition:.15s; font-family:inherit;
 }
-.opt:hover{border-color:var(--brand); background:var(--brand-bg)}
-.opt.picked{border-color:var(--brand); background:var(--brand-bg); box-shadow:0 0 0 3px var(--brand-bg)}
-.opt .bullet{
-  width:26px; height:26px; border-radius:50%; border:2px solid var(--border);
-  flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;
+.answer:hover{border-color:var(--brand); background:var(--brand-bg); transform:translateY(-1px)}
+.answer .mark{
+  width:26px; height:26px; border-radius:50%; border:1.5px solid var(--border);
+  display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--muted); flex-shrink:0;
 }
-.opt.picked .bullet{background:var(--brand); border-color:var(--brand)}
-.q-nav{display:flex; justify-content:space-between; align-items:center; margin-top:10px}
-.q-back{font-size:14px; font-weight:600; color:var(--muted); background:none; border:0; padding:6px 2px}
-.q-back:hover{color:var(--brand)}
+.answer:hover .mark{border-color:var(--brand); color:var(--brand)}
+.answer.is-picked{border-color:var(--brand); background:var(--brand-bg)}
+.answer.is-picked .mark{background:var(--brand); border-color:var(--brand); color:#fff}
+.answer small{display:block; font-weight:500; font-size:13px; color:var(--secondary); margin-top:1px}
 
-/* Result */
-.result-card{background:#fff; border:1px solid var(--border); border-radius:26px; padding:44px 36px; box-shadow:var(--shadow-lg); text-align:center}
-.result-card h1{font-size:clamp(1.5rem,3vw,2rem); margin:20px 0 8px}
-.result-sub{color:var(--secondary); font-size:15.5px; max-width:440px; margin:0 auto 26px}
-.gap-list{text-align:left; background:var(--bg); border:1px solid var(--border); border-radius:16px; padding:18px 20px; margin:0 0 26px}
-.gap-list h3{font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--secondary); margin-bottom:10px}
-.gap-list li{display:flex; gap:10px; align-items:flex-start; padding:6px 0; font-size:14.5px; color:var(--body); list-style:none}
-.gap-list i{color:var(--amber); margin-top:4px; flex-shrink:0}
-.gap-list ul{margin:0; padding:0}
-.boost-note{font-size:13.5px; color:var(--muted); margin-top:12px}
+.q-foot{display:flex; justify-content:space-between; align-items:center; margin-top:22px}
+.linkish{background:none; border:0; font-weight:600; font-size:14px; color:var(--secondary); padding:6px 2px; font-family:inherit; cursor:pointer}
+.linkish:hover{color:var(--brand)}
+.linkish:disabled{opacity:.35; cursor:default}
+
+/* Results */
+.result-card{background:#fff; border:1px solid var(--border); border-radius:24px; box-shadow:var(--shadow-md); padding:38px 30px; text-align:center}
+.gap-row{
+  display:flex; align-items:flex-start; gap:12px; padding:13px 0; border-bottom:1px solid var(--border-light);
+  text-align:left; font-size:14.5px;
+}
+.gap-row:last-child{border-bottom:0}
+.gap-row .state{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; margin-top:2px}
+.state-ok{background:var(--give-tint); color:var(--give-dark)}
+.state-gap{background:var(--rose-tint); color:var(--rose-dark)}
+.gap-row b{color:var(--ink); font-weight:700; display:block}
+.gap-row span{color:var(--secondary); font-size:13.5px}
+.optin{background:var(--brand-bg); border:1px solid #cfe6fb; border-radius:16px; padding:18px 20px; text-align:left}
 </style>
 </head>
 <body>
 
-<div class="nav-wrap">
-  <nav class="navbar py-2 container container-narrow">
-    <a class="brand-lockup" href="index.html">
-      <img src="assets/logo.svg" alt="SupportNow" class="brand-logo">
-      <span class="vertical-tag">Emergency<br>Contact</span>
-    </a>
-    <a class="nav-link-x" href="index.html"><i class="fa-solid fa-arrow-left me-1"></i> Back to overview</a>
-  </nav>
-</div>
+<div id="pfNavMount"></div>
 
 <div class="quiz-shell">
-  <div id="progressWrap">
-    <div class="d-flex justify-content-between align-items-center mb-1">
-      <span class="progress-label">Kids Safety Score</span>
-      <span class="progress-label" id="stepLabel"></span>
+
+  <!-- ── Questions ── -->
+  <div id="quizView">
+    <div class="text-center mb-4">
+      <span class="eyebrow"><i class="fa-solid fa-clipboard-question"></i> Kids Safety Score</span>
+      <h1 class="mt-2" style="font-size:clamp(1.5rem,3vw,2rem)">Nine quick questions</h1>
+      <p style="color:var(--secondary); margin:0">
+        Answer for how things actually are today, not how you mean to set them up.
+      </p>
     </div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+    <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
+    <div class="progress-meta">
+      <span id="progressLabel">Question 1</span>
+      <span id="progressPct">0% complete</span>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num" id="qNum">Question 1</span>
+      <p class="q-text" id="qText"></p>
+      <div class="answers" id="answers"></div>
+      <div class="q-foot">
+        <button class="linkish" id="backBtn"><i class="fa-solid fa-arrow-left me-1"></i> Back</button>
+        <span class="small-print" id="pickedHint"></span>
+      </div>
+    </div>
+
+    <p class="small-print text-center mt-3">No account. No email needed to see your score.</p>
   </div>
-  <div id="stage"></div>
+
+  <!-- ── Results ── -->
+  <div id="resultView" style="display:none">
+    <div class="result-card">
+      <span class="eyebrow"><i class="fa-solid fa-gauge-high"></i> Your Kids Safety Score</span>
+
+      <div class="score-dial my-4">
+        <svg width="190" height="190" viewBox="0 0 190 190">
+          <circle class="track" cx="95" cy="95" r="82"></circle>
+          <circle class="fill" id="dialFill" cx="95" cy="95" r="82"></circle>
+        </svg>
+        <div class="num"><b id="dialNum">0</b><span>out of 100</span></div>
+      </div>
+
+      <div class="mb-3"><span class="band-chip" id="bandChip"><span class="swatch"></span><span id="bandLabel"></span></span></div>
+      <p class="text-balance mb-4" style="color:var(--body); max-width:460px; margin-inline:auto" id="bandBlurb"></p>
+
+      <div class="card-flat p-3 p-md-4 text-start mb-4">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h3 style="font-size:1rem; margin:0">What is covered and what is not</h3>
+          <span class="small-print" id="gapCount"></span>
+        </div>
+        <div id="gapList"></div>
+      </div>
+
+      <h3 class="text-balance mb-2" style="font-size:1.2rem">Every gap above is a question in the questionnaire.</h3>
+      <p style="color:var(--secondary); max-width:470px; margin:0 auto 22px; font-size:15px">
+        Answer them once and your score climbs as you go. At the end you print one page for the
+        fridge with a QR code for each child.
+      </p>
+      <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
+        <a href="questionnaire.html" class="btn btn-brand btn-lg-x">Complete the Questionnaire</a>
+        <a href="sheet.html" class="btn btn-ghost btn-lg-x">See a Sample Sheet</a>
+      </div>
+
+      <div class="optin">
+        <label class="ec-check mb-2">
+          <input type="checkbox" id="optin">
+          <span>Email me my score and a reminder to finish this</span>
+        </label>
+        <div class="d-flex flex-wrap gap-2" id="optinRow" style="display:none !important">
+          <input type="email" class="ec-input" placeholder="you@example.com" style="flex:1; min-width:200px">
+          <button class="btn btn-ghost btn-sm-x" type="button" id="optinBtn">Send it</button>
+        </div>
+        <p class="small-print mb-0" id="optinNote">Optional. Your score is on this screen either way.</p>
+      </div>
+
+      <button class="linkish mt-3" id="retakeBtn"><i class="fa-solid fa-rotate-left me-1"></i> Retake the quiz</button>
+    </div>
+  </div>
 </div>
 
-<script src="assets/qrcode.min.js"></script>
+<div id="pfFootMount"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/ec.js"></script>
 <script>
-const QUESTIONS = [
-  { id: 'q0', unscored: true,
-    text: "First, set the stage. How many kids do you have?",
-    sub: "We will build one row on the fridge sheet for each of them.",
-    opts: [
-      { label: "1", kids: 1 }, { label: "2", kids: 2 }, { label: "3", kids: 3 }, { label: "4 or more", kids: 4 }
-    ]},
-  { id: 'q1',
-    text: "If you were unreachable for six hours, who else could answer a sitter's questions?",
-    opts: [
-      { label: "My partner could cover all of it", pts: 10 },
-      { label: "My partner would get most of it", pts: 7, gap: "One person still holds pieces nobody else has." },
-      { label: "Honestly, it's mostly me", pts: 3, gap: "You are a single point of failure. What only you know is not written anywhere." },
-      { label: "It is all me, and I know it", pts: 0, gap: "You are a single point of failure. What only you know is not written anywhere." }
-    ]},
-  { id: 'q2',
-    text: "Where does your pediatrician's name and number live right now?",
-    opts: [
-      { label: "Posted where any caregiver could find it", pts: 10 },
-      { label: "In my phone contacts", pts: 6, gap: "The doctor's number lives in your phone, and your phone leaves with you." },
-      { label: "In my head", pts: 3, gap: "The doctor's number lives in your head, and so does everything else." },
-      { label: "I would have to look it up myself", pts: 0, gap: "Nobody in the house could name the pediatrician under pressure." }
-    ]},
-  { id: 'q3',
-    text: "Could a babysitter find your kids' allergies and med doses without texting you?",
-    opts: [
-      { label: "Yes, written down and findable", pts: 10 },
-      { label: "They would have to dig around", pts: 4, gap: "Allergies and doses are not findable by a stranger standing in your kitchen." },
-      { label: "No, they would need me", pts: 0, gap: "Allergies and doses are not findable by a stranger standing in your kitchen." }
-    ]},
-  { id: 'q4',
-    text: "Does the school or daycare pickup list match reality?",
-    opts: [
-      { label: "Yes, I updated it this school year", pts: 10 },
-      { label: "Probably?", pts: 5, gap: "Nobody is quite sure who is on the pickup list." },
-      { label: "No idea what it says", pts: 0, gap: "Nobody is quite sure who is on the pickup list." }
-    ]},
-  { id: 'q5',
-    text: "Could a caregiver put their hands on your insurance info in an ER?",
-    opts: [
-      { label: "Yes, it is written where they could find it", pts: 10 },
-      { label: "The cards are in my wallet, with me", pts: 4, gap: "Insurance cards travel with you, which fails exactly when you are the one who is unreachable." },
-      { label: "No", pts: 0, gap: "A caregiver at intake would have nothing: no carrier, no member ID." }
-    ]},
-  { id: 'q6',
-    text: "Is the Poison Control number posted anywhere in your house?",
-    opts: [
-      { label: "Yes, it is posted", pts: 10 },
-      { label: "No, but someone would Google it", pts: 4, gap: "Poison Control is a Google search away, which is slow with a panicking toddler on your hip." },
-      { label: "No", pts: 0, gap: "Poison Control (1-800-222-1222) is not posted anywhere." }
-    ]},
-  { id: 'q7',
-    text: "Do your kids know a parent's actual phone number by heart?",
-    opts: [
-      { label: "Every kid old enough to talk", pts: 10 },
-      { label: "Some of them", pts: 5, gap: "At least one kid cannot reach you without a device in hand." },
-      { label: "Honestly, none of them", pts: 0, gap: "Your kids cannot reach you without a device in hand." }
-    ]},
-  { id: 'q8',
-    text: "Grandma takes the kids for the weekend. What does she leave with?",
-    opts: [
-      { label: "A printed sheet with everything", pts: 10 },
-      { label: "A very long text thread", pts: 6, gap: "The handoff is a text thread, and text threads scroll away." },
-      { label: "A verbal download in the driveway", pts: 3, gap: "The handoff is verbal, and half of it evaporates by Sunday." },
-      { label: "Vibes and prayers", pts: 0, gap: "The handoff is vibes. Grandma is winging it." }
-    ]},
-  { id: 'q9',
-    text: "Whatever is written down today, when was it last updated?",
-    opts: [
-      { label: "This school year", pts: 10 },
-      { label: "More than a year ago", pts: 5, gap: "What is written down is stale: old doses, old numbers, old rules." },
-      { label: "Nothing is written down", pts: 0, gap: "Nothing is written down at all." }
-    ]},
-  { id: 'q10',
-    text: "If both parents were unreachable, who is the named backup adult, and do they know it?",
-    opts: [
-      { label: "Named, and they know it", pts: 10 },
-      { label: "Named, but they might not know", pts: 5, gap: "Your backup adult does not know they are the backup." },
-      { label: "We have not picked anyone", pts: 0, gap: "There is no named backup adult if both of you are out of reach." }
-    ]}
-];
+(function () {
+  var state = EC.load();
+  var items = EC.ITEMS;
+  var idx = 0;
 
-const stage = document.getElementById('stage');
-const fill = document.getElementById('progressFill');
-const stepLabel = document.getElementById('stepLabel');
-let state = EC.load();
-let idx = 0;
+  var quizView = document.getElementById('quizView');
+  var resultView = document.getElementById('resultView');
+  var bar = document.getElementById('bar');
+  var qNum = document.getElementById('qNum');
+  var qText = document.getElementById('qText');
+  var answers = document.getElementById('answers');
+  var backBtn = document.getElementById('backBtn');
+  var pickedHint = document.getElementById('pickedHint');
 
-function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+  var ICONS = { yes: 'check', partly: 'minus', no: 'xmark', na: 'ban' };
 
-function renderQuestion() {
-  const q = QUESTIONS[idx];
-  fill.style.width = Math.round(idx / QUESTIONS.length * 100) + '%';
-  stepLabel.textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
-  const picked = state.quiz.answers[q.id];
-  stage.innerHTML =
-    '<div class="q-card">' +
-      '<h2 class="text-balance">' + esc(q.text) + '</h2>' +
-      (q.sub ? '<div class="q-sub">' + esc(q.sub) + '</div>' : '<div class="q-sub"></div>') +
-      q.opts.map(function (o, i) {
-        return '<button class="opt' + (picked === i ? ' picked' : '') + '" data-i="' + i + '">' +
-          '<span class="bullet">' + (picked === i ? '<i class="fa-solid fa-check"></i>' : '') + '</span>' +
-          '<span>' + esc(o.label) + '</span></button>';
-      }).join('') +
-      '<div class="q-nav">' +
-        (idx > 0 ? '<button class="q-back" id="backBtn"><i class="fa-solid fa-arrow-left me-1"></i> Back</button>' : '<span></span>') +
-        '<span class="progress-label">Pick one</span>' +
-      '</div>' +
-    '</div>';
+  function render() {
+    var item = items[idx];
+    qNum.textContent = 'Question ' + (idx + 1);
+    qText.textContent = item.question;
+    document.getElementById('progressLabel').textContent = 'Question ' + (idx + 1) + ' of ' + items.length;
+    document.getElementById('progressPct').textContent = Math.round((idx / items.length) * 100) + '% complete';
+    bar.style.width = (idx / items.length) * 100 + '%';
+    backBtn.disabled = idx === 0;
 
-  stage.querySelectorAll('.opt').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      const i = parseInt(btn.dataset.i, 10);
-      const opt = q.opts[i];
-      state.quiz.answers[q.id] = i;
-      if (q.unscored) {
-        state.quiz.kidsCount = opt.kids;
-      } else {
-        state.quiz.points[q.id] = opt.pts;
-      }
-      EC.save(state);
-      btn.classList.add('picked');
-      btn.querySelector('.bullet').innerHTML = '<i class="fa-solid fa-check"></i>';
-      setTimeout(function () {
-        idx += 1;
-        if (idx >= QUESTIONS.length) finish(); else renderQuestion();
-      }, 220);
+    var picked = state.quiz.answers[item.id];
+    var options = ['yes', 'partly', 'no'].map(function (key) {
+      return { key: key, label: EC.ANSWER_LABELS[key].label, note: EC.ANSWER_LABELS[key].note };
     });
-  });
-  const back = document.getElementById('backBtn');
-  if (back) back.addEventListener('click', function () { idx -= 1; renderQuestion(); });
-}
+    // Not every question applies to every family, and saying so should not cost points
+    if (item.na) options.push({ key: 'na', label: item.na, note: 'This one does not apply to us' });
 
-function finish() {
-  state.quiz.completedAt = new Date().toISOString();
-  if (!state.kids.length && state.quiz.kidsCount) {
-    for (let i = 0; i < state.quiz.kidsCount; i++) state.kids.push(EC.blankKid());
+    answers.innerHTML = options.map(function (o) {
+      return '<button class="answer' + (o.key === picked ? ' is-picked' : '') + '" data-value="' + o.key + '">' +
+        '<span class="mark"><i class="fa-solid fa-' + ICONS[o.key] + '"></i></span>' +
+        '<span>' + EC.esc(o.label) + '<small>' + EC.esc(o.note) + '</small></span></button>';
+    }).join('');
+
+    pickedHint.textContent = picked ? 'Answered. Pick again to change it.' : '';
   }
-  EC.save(state);
-  renderResult();
-}
 
-function topGaps() {
-  const rows = [];
-  QUESTIONS.forEach(function (q) {
-    if (q.unscored) return;
-    const i = state.quiz.answers[q.id];
-    if (i == null) return;
-    const o = q.opts[i];
-    if (o.gap && o.pts < 10) rows.push({ pts: o.pts, gap: o.gap });
+  answers.addEventListener('click', function (e) {
+    var btn = e.target.closest('.answer');
+    if (!btn) return;
+    state.quiz.answers[items[idx].id] = btn.dataset.value;
+    btn.classList.add('is-picked');
+
+    setTimeout(function () {
+      if (idx < items.length - 1) { idx++; render(); }
+      else { finish(); }
+    }, 180);
   });
-  rows.sort(function (a, b) { return a.pts - b.pts; });
-  const seen = {};
-  return rows.filter(function (r) { if (seen[r.gap]) return false; seen[r.gap] = true; return true; }).slice(0, 3);
-}
 
-const HEADLINES = {
-  rose:  "Right now, the plan is you.",
-  amber: "You are closer than most. The gaps are specific.",
-  brand: "Solid. A few things still live only in your head.",
-  give:  "You are the parent other parents text for advice."
-};
+  backBtn.addEventListener('click', function () { if (idx > 0) { idx--; render(); } });
 
-function renderResult() {
-  document.getElementById('progressWrap').style.display = 'none';
-  const score = EC.score(state);
-  const band = EC.band(score);
-  const gaps = topGaps();
-  const C = 2 * Math.PI * 80;
+  function finish() {
+    state.quiz.selfScore = EC.selfScore(state);
+    state.quiz.takenAt = new Date().toISOString();
+    EC.save(state);
 
-  stage.innerHTML =
-    '<div class="result-card">' +
-      '<span class="eyebrow ' + (band.cls === 'brand' ? '' : band.cls) + '">Your Kids Safety Score</span>' +
-      '<div class="score-dial mt-3" role="img" aria-label="Kids Safety Score: ' + score + ' out of 100, ' + band.label + '">' +
-        '<svg width="190" height="190" viewBox="0 0 190 190" aria-hidden="true">' +
-          '<circle class="track" cx="95" cy="95" r="80"></circle>' +
-          '<circle class="fill" id="dialFill" cx="95" cy="95" r="80" stroke="' + band.color + '" stroke-dasharray="' + C + '" stroke-dashoffset="' + C + '"></circle>' +
-        '</svg>' +
-        '<div class="num"><b id="dialNum">0</b><span>out of 100</span></div>' +
-      '</div>' +
-      '<div class="mt-3"><span class="band-chip band-' + band.cls + '"><span class="swatch"></span>' + band.label + '</span></div>' +
-      '<h1 class="text-balance">' + HEADLINES[band.cls] + '</h1>' +
-      '<p class="result-sub">Most of your missing points are not habits to build. They are facts you already know that nobody has written down. That is fixable today.</p>' +
-      (gaps.length ?
-        '<div class="gap-list"><h3>Where your points went</h3><ul>' +
-        gaps.map(function (g) { return '<li><i class="fa-solid fa-triangle-exclamation"></i><span>' + esc(g.gap) + '</span></li>'; }).join('') +
-        '</ul></div>' : '') +
-      '<a class="btn btn-brand btn-lg-x w-100 mb-2" href="builder.html"><i class="fa-solid fa-wand-magic-sparkles me-2"></i>Build your Emergency Card</a>' +
-      '<div class="boost-note">Finishing it is worth up to +' + (45 - EC.earned(state)) + ' points, about ten minutes.</div>' +
-      '<button class="q-back mt-3" id="retake"><i class="fa-solid fa-rotate-left me-1"></i> Retake the quiz</button>' +
-    '</div>';
+    bar.style.width = '100%';
+    quizView.style.display = 'none';
+    resultView.style.display = 'block';
+    window.scrollTo(0, 0);
+    paintResult();
+  }
 
-  setTimeout(function () {
-    document.getElementById('dialFill').style.strokeDashoffset = C * (1 - score / 100);
-  }, 120);
-  const numEl = document.getElementById('dialNum');
-  const t0 = performance.now();
-  (function tick(t) {
-    const p = Math.min(1, (t - t0) / 900);
-    numEl.textContent = Math.round(score * (1 - Math.pow(1 - p, 3)));
-    if (p < 1) requestAnimationFrame(tick);
-  })(t0);
+  function paintResult() {
+    var n = EC.score(state);
+    var b = EC.band(n);
 
-  document.getElementById('retake').addEventListener('click', function () {
-    state.quiz = EC.blank().quiz;
+    var fill = document.getElementById('dialFill');
+    var circumference = 2 * Math.PI * 82;
+    fill.style.stroke = b.color;
+    fill.style.strokeDasharray = circumference;
+    fill.style.strokeDashoffset = circumference;
+
+    document.querySelector('#bandChip .swatch').style.background = b.color;
+    document.getElementById('bandLabel').textContent = b.label;
+    document.getElementById('bandBlurb').textContent = b.blurb;
+
+    // Count up alongside the dial sweep
+    var num = document.getElementById('dialNum');
+    var settled = false;
+    setTimeout(function () {
+      fill.style.strokeDashoffset = circumference * (1 - n / 100);
+      var start = null, dur = 900;
+      function step(ts) {
+        if (settled) return;
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        num.textContent = Math.round(n * eased);
+        if (p < 1) requestAnimationFrame(step);
+        else settled = true;
+      }
+      requestAnimationFrame(step);
+    }, 120);
+    // A backgrounded tab never runs the frames above, so land on the real number
+    // regardless, and keep a late frame from rewinding it
+    setTimeout(function () { settled = true; num.textContent = n; }, 1400);
+
+    var open = EC.gaps(state);
+    document.getElementById('gapCount').textContent =
+      open.length ? open.length + ' of ' + items.length + ' to close' : 'All ' + items.length + ' covered';
+
+    document.getElementById('gapList').innerHTML = items.map(function (item) {
+      var covered = EC.itemScore(item, state) === 10;
+      return '' +
+        '<div class="gap-row">' +
+          '<span class="state ' + (covered ? 'state-ok' : 'state-gap') + '">' +
+            '<i class="fa-solid fa-' + (covered ? 'check' : 'xmark') + '"></i></span>' +
+          '<div><b>' + EC.esc(item.label) + '</b>' +
+            '<span>' + (covered ? 'Covered' : EC.esc(item.fix)) + '</span></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  // Optional email capture, revealed only when asked for
+  var optin = document.getElementById('optin');
+  var optinRow = document.getElementById('optinRow');
+  optin.addEventListener('change', function () {
+    optinRow.style.setProperty('display', optin.checked ? 'flex' : 'none', 'important');
+  });
+  document.getElementById('optinBtn').addEventListener('click', function () {
+    var note = document.getElementById('optinNote');
+    note.textContent = 'Prototype only. Nothing was sent.';
+    note.style.color = 'var(--give-dark)';
+  });
+
+  document.getElementById('retakeBtn').addEventListener('click', function () {
+    state.quiz.answers = {};
     EC.save(state);
     idx = 0;
-    document.getElementById('progressWrap').style.display = '';
-    renderQuestion();
+    resultView.style.display = 'none';
+    quizView.style.display = 'block';
+    window.scrollTo(0, 0);
+    render();
   });
-}
 
-if (state.quiz.completedAt) renderResult(); else renderQuestion();
+  // Someone arriving with a finished quiz sees the result, not question one
+  if (Object.keys(state.quiz.answers).length === items.length) finish();
+  else render();
+})();
 </script>
+<script>window.EC_SHELL = { active: 'Safety Score' };</script>
+<script src="apps.js"></script>
+<script src="shell-app.js"></script>
 </body>
 </html>
