@@ -118,9 +118,6 @@
   <div class="container container-narrow">
     <div class="row align-items-center g-4 g-lg-5">
       <div class="col-lg-6">
-        <span class="promo-badge" data-promo-badge>
-          <span class="dot"></span> <b>Back to school</b> · Free Kids Safety Score
-        </span>
         <h1 class="text-balance">Everything about your kids lives in your head. Put a copy on the fridge.</h1>
         <p class="lede">
           An Emergency Card is one printed page that holds what anyone caring for your kids needs to
@@ -551,7 +548,7 @@
   /* The page is written for the promotion running. When it ends, the product's
      call to action takes the lead and every trace of the campaign comes out. */
   if (!EC.PROMO.active) {
-    ['[data-promo-cta]', '[data-promo-badge]', '#promoBand', '[data-promo-footnote]']
+    ['[data-promo-cta]', '#promoBand', '[data-promo-footnote]']
       .forEach(function (sel) {
         var el = document.querySelector(sel);
         if (el) el.remove();
