@@ -96,15 +96,17 @@ window.PF_APPS = [
     home: 'index.html',
     shareUrl: 'https://supportnow.org/emergency',
     links: [
-      { label: 'How It Works', href: 'index.html#how' },
-      { label: 'Safety Score', href: 'quiz.html' },
-      { label: 'Fridge Sheet', href: 'sheet.html' }
+      { label: 'How It Works',   href: 'index.html#how' },
+      { label: 'Emergency Card', href: 'questionnaire.html' },
+      { label: 'Safety Score',   href: 'safety-score.html' }
     ],
-    cta: { label: 'Get Your Kids Safety Score', href: 'quiz.html' },
+    /* The product's call to action. shell-app.js swaps this for the campaign's
+       while EC.PROMO.active, so the registry stays about the product. */
+    cta: { label: 'Create My Emergency Card', href: 'questionnaire.html' },
     footCta: {
-      head: 'Find out what someone else would know',
-      desc: 'Ten questions, two minutes, no account. You get a score and the exact gaps to close.',
-      label: 'Get Your Kids Safety Score', href: 'quiz.html'
+      head: 'Ready to make yours?',
+      desc: 'Answer the questionnaire once and print one page for the fridge, with a code for each child.',
+      label: 'Create My Emergency Card', href: 'questionnaire.html'
     }
   },
   {

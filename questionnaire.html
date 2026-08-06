@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Emergency Card | Emergency Contact by SupportNow</title>
-<meta name="description" content="A guided Emergency Card for your family. Every section you finish raises your Kids Safety Score and adds to the sheet on your fridge.">
+<title>The Questionnaire | Emergency Contact by SupportNow</title>
+<meta name="description" content="Five sections, about fifteen minutes. Answer them once and print your Emergency Card for the fridge, with a QR code for each child.">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -77,7 +77,17 @@
 }
 .dock .inner{max-width:780px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; gap:12px}
 .dock .lift{font-size:13px; color:var(--give-dark); font-weight:700}
-@media (max-width:576px){ .dock .hide-sm{display:none} }
+
+.progress-chip{display:inline-flex; align-items:center; gap:11px}
+.progress-chip .track{width:96px; height:7px; border-radius:50px; background:var(--border-light); overflow:hidden; flex-shrink:0}
+.progress-chip .fill{display:block; height:100%; width:0; border-radius:50px; background:var(--brand); transition:width .3s cubic-bezier(.22,1,.36,1)}
+.progress-chip .txt{font-size:14px; font-weight:700; color:var(--ink); white-space:nowrap}
+.progress-chip.is-done .fill{background:var(--give)}
+
+@media (max-width:576px){
+  .dock .hide-sm{display:none}
+  .progress-chip .track{width:60px}
+}
 </style>
 </head>
 <body>
@@ -89,12 +99,15 @@
     <span class="eyebrow"><i class="fa-solid fa-address-card"></i> The questionnaire</span>
     <h1 class="mt-2 mb-2" style="font-size:clamp(1.6rem,3vw,2.1rem)">Answer what only you know</h1>
     <p style="color:var(--secondary)">
-      Work top to bottom or jump to the gaps from your score. Everything saves as you type, and you
-      can stop whenever you are happy with the number.
+      Five sections, about fifteen minutes. Everything saves as you type, so you can stop and come
+      back. When you are done it prints as your Emergency Card.
+    </p>
+    <p style="color:var(--secondary)" id="fromScore" hidden>
+      Every gap from your Kids Safety Score is in here. Answer it and the number climbs as you go.
     </p>
 
     <div class="print-key">
-      <span><i class="fa-solid fa-print"></i> <b>On the printed page</b> so anyone can read it at a glance</span>
+      <span><i class="fa-solid fa-print"></i> <b>On the printed card</b> so anyone can read it at a glance</span>
       <span><i class="fa-solid fa-qrcode"></i> <b>Behind the QR code</b> only, so it takes a scan to see</span>
     </div>
 
@@ -114,13 +127,20 @@
 <div class="dock">
   <div class="inner">
     <div class="d-flex align-items-center gap-3">
-      <span class="score-chip" id="chip">
+      <!-- The product's own measure of progress. Everyone sees this. -->
+      <span class="progress-chip" id="progressChip">
+        <span class="track"><span class="fill" id="progressFill"></span></span>
+        <span class="txt" id="progressTxt">0 of 5 sections done</span>
+      </span>
+
+      <!-- The campaign's measure. Only for people who actually took the quiz. -->
+      <span class="score-chip" id="chip" hidden>
         <span class="ring">0</span>
         <span>Safety Score <small data-score-value></small></span>
       </span>
       <span class="lift hide-sm" id="lift"></span>
     </div>
-    <a href="sheet.html" class="btn btn-brand" id="printBtn">Print My Fridge Sheet</a>
+    <a href="sheet.html" class="btn btn-brand" id="printBtn">Print My Emergency Card</a>
   </div>
 </div>
 
@@ -159,7 +179,7 @@
   /* Says whether an answer shows on the printed page or only after a scan */
   function where(kind) {
     if (kind === 'print') {
-      return ' <span class="where where-print" title="Prints on the fridge sheet">' +
+      return ' <span class="where where-print" title="Prints on your Emergency Card">' +
              '<i class="fa-solid fa-print"></i> prints</span>';
     }
     if (kind === 'qr') {
@@ -383,12 +403,25 @@
     return state.children.some(function (c) { return !!(c.name || '').trim(); });
   }
 
+  /* The Safety Score belongs to the campaign, so it only appears for people who
+     actually took the quiz. Everyone else gets the product's own progress. */
+  var fromCampaign = EC.tookQuiz(state);
+
   function paintScore() {
-    var n = EC.score(state);
-    EC.paintScoreChip(document.getElementById('chip'), state);
-    var lift = document.getElementById('lift');
-    var delta = n - startScore;
-    lift.textContent = delta > 0 ? '+' + delta + ' since you started' : '';
+    var done = SECTIONS.filter(function (sec) { return sec.done(); }).length;
+    var chip = document.getElementById('progressChip');
+    document.getElementById('progressFill').style.width = (done / SECTIONS.length) * 100 + '%';
+    document.getElementById('progressTxt').textContent =
+      done === SECTIONS.length ? 'All ' + SECTIONS.length + ' sections done'
+                               : done + ' of ' + SECTIONS.length + ' sections done';
+    chip.classList.toggle('is-done', done === SECTIONS.length);
+
+    if (fromCampaign) {
+      EC.paintScoreChip(document.getElementById('chip'), state);
+      var delta = EC.score(state) - startScore;
+      document.getElementById('lift').textContent = delta > 0 ? '+' + delta + ' since you started' : '';
+    }
+
     document.getElementById('printBtn').classList.toggle('disabled', !hasNamedChild());
   }
 
@@ -542,10 +575,16 @@
   var firstOpen = SECTIONS.filter(function (s) { return !s.done(); })[0] || SECTIONS[0];
   openSections[firstOpen.id] = true;
 
+  if (fromCampaign) {
+    document.getElementById('chip').hidden = false;
+    document.getElementById('progressChip').hidden = true;
+    document.getElementById('fromScore').hidden = false;
+  }
+
   renderAll();
 })();
 </script>
-<script>window.EC_SHELL = { active: 'Safety Score', footCta: { head: 'Ready to print it?', desc: 'Your fridge sheet builds itself from the answers above. One page, one row per child.', label: 'See My Fridge Sheet', href: 'sheet.html' } };</script>
+<script>window.EC_SHELL = { active: 'Emergency Card', footCta: { head: 'Ready to print it?', desc: 'Your Emergency Card builds itself from the answers above. One page, one row per child.', label: 'See My Emergency Card', href: 'sheet.html' } };</script>
 <script src="apps.js"></script>
 <script src="shell-app.js"></script>
 </body>

@@ -16,22 +16,55 @@ Certain moments already force this information out of her head and onto paper: b
 babysitter, a weekend away, grandparents taking the kids. Every one of those makes her rebuild the
 same list from memory. This campaign gets it built once.
 
-## The funnel
+## The product and the promotion are two different things
 
-| Page | Role |
+This is the organising idea of the whole build, and it is easy to break by accident.
+
+**The product** is the **Emergency Card**: one printed page on your fridge. You get one by
+completing the questionnaire. It is evergreen.
+
+**The promotion** is the **Kids Safety Score**: a campaign that exists to get attention and route
+people into that same questionnaire. It runs for a while and then stops.
+
+Two paths reach the deliverable, and both are first class:
+
+| Path | Route |
 |---|---|
-| `index.html` | Landing page. CTA is **Get Your Kids Safety Score**. |
-| `quiz.html` | The score. Nine questions, two minutes, no account. Results name the specific gaps. |
-| `questionnaire.html` | The questions that close those gaps. Score climbs live as you answer. |
-| `sheet.html` | The deliverable. One printable page, one row per child, a QR code each. |
-| `child.html` | What the QR code opens. Phone-shaped view of one child. |
+| Direct | `index.html` → `questionnaire.html` → `sheet.html` |
+| Campaign | `safety-score.html` → `quiz.html` → `questionnaire.html` → `sheet.html` |
 
-The gateway is deliberate: kids first because they are the easiest yes, then the same card for a
+| Page | Belongs to | Role |
+|---|---|---|
+| `index.html` | product | What an Emergency Card is and how to get one, with the promo highlighted in the header |
+| `questionnaire.html` | product | Five sections. Answer once. |
+| `sheet.html` | product | The Emergency Card itself, printable |
+| `child.html` | product | What a QR code opens. No shell nav: a sitter opens this mid-emergency |
+| `safety-score.html` | campaign | Landing page for cold traffic from ads and social |
+| `quiz.html` | campaign | The nine questions and the result |
+
+The expansion is deliberate: kids first because they are the easiest yes, then the same card for a
 partner, for yourself, and for aging parents.
+
+## Ending the promotion
+
+Set `active: false` in `EC.PROMO` (`assets/ec.js`) and the campaign retires everywhere in one edit:
+
+- the header call to action falls back to **Create My Emergency Card**
+- the hero promo badge, the promo band, and the closing footnote are removed
+- the Safety Score link drops out of the nav, on every page, via `shell-app.js`
+- the score chip never appears in the questionnaire or on the card
+
+Verified by flipping it: with the promo off, the string "safety score" does not appear anywhere on
+the homepage.
+
+**The score never leaks into the product.** `EC.tookQuiz()` is the single test. Someone who came
+the direct route sees section progress ("3 of 5 sections done") in the questionnaire dock and no
+score chip on their card, because they never opted into that game.
 
 ## Scoring
 
-Nine items, ten points each, normalized to 100. Defined in `assets/ec.js` as `EC.ITEMS`.
+Nine items, ten points each, normalized to 100. Defined in `assets/ec.js` as `EC.ITEMS`, and read
+directly by `safety-score.html` so the campaign page can never drift out of step with the quiz.
 
 Each item scores `max(what you said in the quiz, what your answers actually document)`, so filling
 in the questionnaire can only ever raise the number, and it raises it honestly, because the thing is

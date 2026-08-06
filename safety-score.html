@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids Safety Score | Emergency Contact by SupportNow</title>
+<meta name="description" content="Nine questions, two minutes, no account. Find out how much of what your kids need is written down anywhere but your own head, and exactly which gaps to close.">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link href="shell.css" rel="stylesheet">
+<link href="assets/ec.css" rel="stylesheet">
+
+<style>
+/* The campaign runs on amber so it never reads as the product itself */
+.camp-hero{
+  position:relative; overflow:hidden; padding:60px 0 70px; text-align:center;
+  background:
+    radial-gradient(1000px 460px at 20% -20%, var(--warm-1) 0%, transparent 58%),
+    radial-gradient(900px 440px at 85% -14%, var(--warm-2) 0%, transparent 58%);
+}
+.camp-hero h1{font-size:clamp(2rem,4.2vw,3rem); margin:18px auto 18px; max-width:760px}
+.camp-hero .lede{font-size:clamp(1.03rem,1.5vw,1.2rem); color:var(--body); max-width:600px; margin:0 auto}
+.promo-badge{
+  display:inline-flex; align-items:center; gap:9px; background:var(--amber-tint);
+  border:1.5px solid #fcd9a0; color:var(--amber); border-radius:50px;
+  padding:6px 16px 6px 13px; font-size:13px; font-weight:700;
+}
+.promo-badge b{color:var(--ink); font-weight:800}
+.promo-badge .dot{width:6px; height:6px; border-radius:50%; background:var(--amber); flex-shrink:0}
+.btn-amber{background:var(--amber); color:#fff}
+.btn-amber:hover{background:#b45309; color:#fff; transform:translateY(-1px); box-shadow:0 10px 24px -10px rgba(217,119,6,.6)}
+.trust-row{display:flex; flex-wrap:wrap; gap:10px 24px; justify-content:center; margin-top:26px}
+.trust-row span{font-size:13.5px; color:var(--secondary); font-weight:500; display:inline-flex; align-items:center; gap:8px}
+.trust-row i{color:var(--give)}
+
+.measure{
+  display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid var(--border);
+  border-radius:14px; padding:15px 17px; height:100%; box-shadow:var(--shadow);
+}
+.measure i{color:var(--amber); font-size:14px; margin-top:4px; flex-shrink:0}
+.measure b{font-size:14.5px; color:var(--ink); font-weight:700; display:block; line-height:1.35}
+
+.band-row{
+  display:flex; align-items:center; gap:16px; padding:15px 18px; background:#fff;
+  border:1px solid var(--border); border-radius:14px; margin-bottom:10px; box-shadow:var(--shadow);
+}
+.band-row .range{
+  font-weight:800; font-size:15px; color:#fff; border-radius:9px; padding:7px 12px;
+  min-width:74px; text-align:center; flex-shrink:0;
+}
+.band-row b{display:block; font-size:15px; color:var(--ink)}
+.band-row span{font-size:13.5px; color:var(--secondary)}
+
+.handoff{background:var(--brand-bg); border:1px solid #cfe6fb; border-radius:20px; padding:30px 32px}
+</style>
+</head>
+<body>
+
+<div id="pfNavMount"></div>
+
+<!-- ── Campaign hero ── -->
+<section class="camp-hero">
+  <div class="container container-narrow">
+    <span class="promo-badge"><span class="dot"></span> <b>Back to school</b> · Running now</span>
+    <h1 class="text-balance">How much of what your kids need is only in your head?</h1>
+    <p class="lede">
+      Nine questions about what would happen if someone else had your kids tomorrow. You get a score
+      out of 100 and the exact list of what a babysitter could not find without calling you.
+    </p>
+    <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+      <a href="quiz.html" class="btn btn-amber btn-lg-x">Get Your Kids Safety Score</a>
+      <a href="index.html" class="btn btn-ghost btn-lg-x">What is an Emergency Card?</a>
+    </div>
+    <div class="trust-row">
+      <span><i class="fa-solid fa-circle-check"></i> Two minutes</span>
+      <span><i class="fa-solid fa-circle-check"></i> No account</span>
+      <span><i class="fa-solid fa-circle-check"></i> No email to see your score</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── What it measures ── -->
+<section class="section" style="background:#fff; border-top:1px solid var(--border-light)">
+  <div class="container container-narrow">
+    <div class="section-head">
+      <span class="eyebrow amber"><i class="fa-solid fa-list-check"></i> What it measures</span>
+      <h2 class="text-balance mt-2">Nine things someone else would need, and whether they could find them</h2>
+      <p>
+        The score is not about how good a parent you are. It is about how much of what you know is
+        reachable by anyone but you.
+      </p>
+    </div>
+    <div class="row g-3" id="measures"></div>
+    <p class="small-print text-center mt-4">
+      Two of the nine let you answer "does not apply to us" and still get full credit. A family whose
+      kids have no allergies is not less prepared.
+    </p>
+  </div>
+</section>
+
+<!-- ── The bands ── -->
+<section class="section">
+  <div class="container container-narrow">
+    <div class="section-head">
+      <span class="eyebrow amber"><i class="fa-solid fa-gauge-high"></i> What your score means</span>
+      <h2 class="text-balance mt-2">Four honest places to land</h2>
+      <p>Most families come out around the middle. That is the point of taking it.</p>
+    </div>
+    <div style="max-width:720px; margin:0 auto" id="bands"></div>
+  </div>
+</section>
+
+<!-- ── The handoff to the product ── -->
+<section class="section" style="background:#fff; border-top:1px solid var(--border-light)">
+  <div class="container container-narrow">
+    <div class="handoff">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="eyebrow"><i class="fa-solid fa-arrow-right-long"></i> Then what</span>
+          <h2 class="mt-2 mb-2" style="font-size:1.5rem">Every gap it finds is a question you can answer today.</h2>
+          <p style="color:var(--secondary); margin:0; font-size:15px">
+            The score is a starting point, not the product. Each gap maps to a question in the
+            questionnaire, and the questionnaire prints your Emergency Card: one page for the fridge,
+            one row per child, a QR code each. You can skip the score and go straight there any time.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="questionnaire.html" class="btn btn-brand">Create My Emergency Card</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Final CTA ── -->
+<section class="section" style="text-align:center; padding-bottom:90px">
+  <div class="container container-narrow">
+    <h2 class="text-balance mb-3" style="font-size:clamp(1.7rem,3vw,2.3rem); max-width:640px; margin-inline:auto">
+      Find out where your family actually stands.
+    </h2>
+    <p style="color:var(--secondary); max-width:520px; margin:0 auto 24px">
+      Nine questions. Two minutes. Nothing to sign up for.
+    </p>
+    <a href="quiz.html" class="btn btn-amber btn-lg-x">Get Your Kids Safety Score</a>
+  </div>
+</section>
+
+<div class="container container-narrow">
+  <p class="small-print pb-4 mb-0">
+    Prototype. Emergency Contact does not provide medical advice. In an emergency, call 911.
+  </p>
+</div>
+
+<div id="pfFootMount"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/ec.js"></script>
+<script>
+window.EC_SHELL = {
+  active: 'Safety Score',
+  footCta: {
+    head: 'Two minutes, no account',
+    desc: 'Nine questions about what someone else could find without calling you.',
+    label: 'Get Your Kids Safety Score', href: 'quiz.html'
+  }
+};
+</script>
+<script src="apps.js"></script>
+<script src="shell-app.js"></script>
+<script>
+(function () {
+  /* Both lists come straight from ec.js so the campaign page can never drift
+     out of step with the quiz it is selling. */
+  document.getElementById('measures').innerHTML = EC.ITEMS.map(function (item) {
+    return '<div class="col-md-6 col-lg-4"><div class="measure">' +
+      '<i class="fa-solid fa-circle-check"></i><b>' + EC.esc(item.label) + '</b>' +
+      '</div></div>';
+  }).join('');
+
+  document.getElementById('bands').innerHTML = EC.BANDS.slice().reverse().map(function (b, i, arr) {
+    var next = arr[i + 1];
+    var range = next ? b.min + ' to ' + (next.min - 1) : b.min + ' to 100';
+    return '<div class="band-row">' +
+      '<span class="range" style="background:' + b.color + '">' + range + '</span>' +
+      '<span><b>' + EC.esc(b.label) + '</b><span>' + EC.esc(b.blurb) + '</span></span>' +
+      '</div>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

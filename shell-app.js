@@ -23,7 +23,12 @@
   function each(sel, fn) { [].forEach.call(document.querySelectorAll(sel), fn); }
   function mount(id, html) { var el = document.getElementById(id); if (el) el.outerHTML = html; }
 
-  var links = app.links || [];
+  /* The campaign's own page is only worth linking while the campaign runs, so it
+     retires from the nav with everything else the promotion owns. */
+  var promo = (window.EC && window.EC.PROMO) || {};
+  var links = (app.links || []).filter(function (l) {
+    return promo.active || !promo.cta || l.href !== promo.cta.href;
+  });
 
   function switcherPanel(up) {
     return '' +
@@ -51,8 +56,10 @@
     }).join('');
   }
 
+  /* The header leads with the campaign while it is running, and falls back to the
+     product's own call to action the moment EC.PROMO.active goes false. */
   function ctaBtn() {
-    var c = app.cta || {};
+    var c = (window.EC && window.EC.headerCta) ? window.EC.headerCta() : (app.cta || {});
     return '<a href="' + esc(c.href) + '" class="pf-cta">' + esc(c.label) +
            ' <i class="fa-solid fa-arrow-right"></i></a>';
   }

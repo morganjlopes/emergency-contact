@@ -345,8 +345,38 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  /* ── The product and the promotion ────────────
+     The Emergency Card is the product. The Kids Safety Score is a campaign that
+     runs for a while and then stops. Everything the campaign owns hangs off this
+     one object, so ending it is a single edit: set active to false and the header
+     falls back to the product call to action and the promo band disappears. */
+  var PROMO = {
+    active: true,
+    badge: 'Back to school',
+    headline: 'How much of it is only in your head?',
+    blurb: 'Nine questions, two minutes, no account. You get a Kids Safety Score out of 100 and ' +
+           'the exact list of what a babysitter could not find without you.',
+    cta: { label: 'Get Your Kids Safety Score', href: 'safety-score.html' }
+  };
+
+  /* The product's own call to action, used whenever the promotion is not running */
+  var PRODUCT_CTA = { label: 'Create My Emergency Card', href: 'questionnaire.html' };
+
+  /* Did this person arrive through the campaign? The score and its climbing
+     number belong to the quiz, so they stay hidden from anyone who skipped it. */
+  function tookQuiz(s) {
+    s = s || load();
+    return !!(s.quiz && s.quiz.takenAt);
+  }
+
+  /* Whichever call to action the header should lead with right now */
+  function headerCta() {
+    return PROMO.active ? PROMO.cta : PRODUCT_CTA;
+  }
+
   window.EC = {
     KEY: KEY, ITEMS: ITEMS, BANDS: BANDS, ANSWER_LABELS: ANSWER_LABELS,
+    PROMO: PROMO, PRODUCT_CTA: PRODUCT_CTA, headerCta: headerCta, tookQuiz: tookQuiz,
     blank: blank, load: load, save: write, reset: reset,
     score: score, selfScore: selfScore, gaps: gaps, band: band, itemScore: itemScore,
     age: age, makeCode: makeCode, childUrl: childUrl, qr: qr,
